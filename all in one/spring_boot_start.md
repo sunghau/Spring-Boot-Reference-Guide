@@ -80,7 +80,7 @@ dependencies {
 }
 </pre>
 
-#### 3.安裝Spring Boot命令行工具
+#### 3.安裝Spring Boot命令列工具
 
 <pre>
 $ gvm install springboot

@@ -1,6 +1,6 @@
 ### 附錄A. 常見應用屬性
 
-你可以在`application.properties/application.yml`文件內部或通過命令行開關來指定各種屬性。本章節提供了一個常見Spring Boot屬性的列表及使用這些屬性的底層類的引用。
+你可以在`application.properties/application.yml`文件內部或通過命令列開關來指定各種屬性。本章節提供了一個常見Spring Boot屬性的列表及使用這些屬性的底層類的引用。
 
 **注**：屬性可以來自classpath下的其他jar文件中，所以你不應該把它當成詳盡的列表。定義你自己的屬性也是相當合法的。
 

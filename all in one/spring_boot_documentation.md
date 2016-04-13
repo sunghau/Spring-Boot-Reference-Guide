@@ -13,7 +13,7 @@ Spring Boot參考指南有[html](http://docs.spring.io/spring-boot/docs/1.3.0.BU
 使用Spring Boot遇到麻煩，我們很樂意幫忙！
 
 - 嘗試[How-to’s](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto)－它們為多數常見問題提供解決方案。
-- 學習Spring基礎知識－Spring Boot是在很多Spring項目上建構的，查看[spring.io](http://spring.io/)站點可以獲取大量參考文件。如果你剛開始使用Spring，可以嘗試其中的一個[指導](http://spring.io/guides)。
+- 學習Spring基礎知識－Spring Boot是在很多Spring項目上建構的，查看[spring.io](http://spring.io/)網站可以獲取大量參考文件。如果你剛開始使用Spring，可以嘗試其中的一個[指導](http://spring.io/guides)。
 - 提問題－我們時刻監控著[stackoverflow.com](http://stackoverflow.com/)上標記[spring-boot](http://stackoverflow.com/tags/spring-boot)的問題。
 - 在[github.com/spring-projects/spring-boot/issues](https://github.com/spring-projects/spring-boot/issues)報告Spring Boot的bug。
 
@@ -35,7 +35,7 @@ Spring Boot參考指南有[html](http://docs.spring.io/spring-boot/docs/1.3.0.BU
 - 最佳實踐：[代碼結構](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#using-boot-structuring-your-code)｜[@Configuration](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#using-boot-configuration-classes)｜[@EnableAutoConfiguration](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#using-boot-auto-configuration)｜[Beans和依賴注入](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#using-boot-spring-beans-and-dependency-injection)
 - 運行代碼：[IDE](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#using-boot-running-from-an-ide)｜[Packaged](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#using-boot-running-as-a-packaged-application)｜[Maven](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#using-boot-running-with-the-maven-plugin)｜[Gradle](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#using-boot-running-with-the-gradle-plugin)
 - 應用打包：[生產jars](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#using-boot-packaging-for-production)
-- Spring Boot命令行：[使用CLI](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#cli)
+- Spring Boot命令列：[使用CLI](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#cli)
 
 * 了解Spring Boot特性
 
@@ -44,7 +44,7 @@ Spring Boot參考指南有[html](http://docs.spring.io/spring-boot/docs/1.3.0.BU
 - 核心特性：[SpringApplication](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-spring-application)｜[外部配置](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-external-config)｜[Profiles](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-profiles)｜[日誌](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-logging)
 - Web應用：[MVC](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-spring-mvc)｜[內嵌容器](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-embedded-container)
 - 使用數據：[SQL](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-sql)｜[NO-SQL](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-nosql)
-- 消息：[概述](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-messaging)｜[JMS](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-jms)
+- 訊息：[概述](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-messaging)｜[JMS](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-jms)
 - 測試：[概述](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-testing)｜[Boot應用](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-testing-spring-boot-applications)｜[工具](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-test-utilities)
 - 擴展：[Auto-configuration](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-developing-auto-configuration)｜[@Conditions](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-condition-annotations)
 
@@ -53,7 +53,7 @@ Spring Boot參考指南有[html](http://docs.spring.io/spring-boot/docs/1.3.0.BU
 當你準備將你的Spring Boot應用推送到生產環境時，我們為你準備了一些你[可能喜歡的技巧](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready)！
 
 - 管理端點：[概述](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-endpoints)｜[自定義](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-customizing-endpoints)
-- 連接可選項：[HTTP](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-monitoring)｜[JMX](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-jmx)｜[SSH](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-remote-shell)
+- 連接選項：[HTTP](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-monitoring)｜[JMX](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-jmx)｜[SSH](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-remote-shell)
 - 監控：[指標](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-metrics)｜[審計](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-auditing)｜[追蹤](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-tracing)｜[進程](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-process-monitoring)
 
 * 高級主題

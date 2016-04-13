@@ -17,7 +17,7 @@ Spring Boot自動配置總是嘗試盡最大努力去做正確的事，但有時
 通過查看源碼和javadoc可以獲取更多問題的答案。以下是一些經驗：
 
 1. 查找名為`*AutoConfiguration`的類並閱讀源碼，特別是`@Conditional*`注解，這可以幫你找出它們啟用哪些特性及何時啟用。
-將`--debug`添加到命令行或添加系統屬性`-Ddebug`可以在控製台查看日誌，該日誌會記錄你的應用中所有自動配置的決策。在一個運行的Actuator app中，通過查看`autoconfig`端點（`/autoconfig`或等效的JMX）可以獲取相同信息。
+將`--debug`添加到命令列或添加系統屬性`-Ddebug`可以在控製台查看日誌，該日誌會記錄你的應用中所有自動配置的決策。在一個運行的Actuator app中，通過查看`autoconfig`端點（`/autoconfig`或等效的JMX）可以獲取相同信息。
 2. 查找是`@ConfigurationProperties`的類（比如[ServerProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/ServerProperties.java)）並看下有哪些可用的外部配置選項。`@ConfigurationProperties`類有一個用於充當外部配置前綴的`name`屬性，因此`ServerProperties`的值為`prefix="server"`，它的配置屬性有`server.port`，`server.address`等。在運行的Actuator應用中可以查看`configprops`端點。
 3. 查看使用`RelaxedEnvironment`明確地將配置從`Environment`暴露出去。它經常會使用一個前綴。
 4. 查看`@Value`注解，它直接綁定到`Environment`。相比`RelaxedEnvironment`，這種方式稍微缺乏靈活性，但它也允許鬆散的綁定，特別是OS環境變量（所以`CAPITALS_AND_UNDERSCORES`是`period.separated`的同義詞）。
@@ -56,20 +56,20 @@ spring.main.show_banner=false
 
 默認情況下，來自不同源的屬性以一個定義好的順序添加到Spring的`Environment`中（查看'Sprin Boot特性'章節的[Chapter 23, Externalized Configuration](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-external-config)獲取精確的順序）。
 
-為應用程序源添加`@PropertySource`注解是一種很好的添加和修改源順序的方法。傳遞給`SpringApplication`靜態便利設施（convenience）方法的類和使用`setSources()`添加的類都會被檢查，以查看它們是否有`@PropertySources`，如果有，這些屬性會被盡可能早的添加到`Environment`裡，以確保`ApplicationContext`生命周期的所有階段都能使用。以這種方式添加的屬性優先於任何使用默認位置添加的屬性，但低於系統屬性，環境變量或命令行參數。
+為應用程序源添加`@PropertySource`注解是一種很好的添加和修改源順序的方法。傳遞給`SpringApplication`靜態便利設施（convenience）方法的類和使用`setSources()`添加的類都會被檢查，以查看它們是否有`@PropertySources`，如果有，這些屬性會被盡可能早的添加到`Environment`裡，以確保`ApplicationContext`生命周期的所有階段都能使用。以這種方式添加的屬性優先於任何使用默認位置添加的屬性，但低於系統屬性，環境變量或命令列參數。
 
 你也可以提供系統屬性（或環境變量）來改變該行為：
 
 1. `spring.config.name`（`SPRING_CONFIG_NAME`）是根文件名，默認為`application`。
-2. `spring.config.location`（`SPRING_CONFIG_LOCATION`）是要加載的文件（例如，一個classpath資源或一個URL）。Spring Boot為該文件設置一個單獨的`Environment`屬性，它可以被系統屬性，環境變量或命令行參數覆蓋。
+2. `spring.config.location`（`SPRING_CONFIG_LOCATION`）是要加載的文件（例如，一個classpath資源或一個URL）。Spring Boot為該文件設置一個單獨的`Environment`屬性，它可以被系統屬性，環境變量或命令列參數覆蓋。
 
 不管你在environment設置什麼，Spring Boot都將加載上麵討論過的`application.properties`。如果使用YAML，那具有'.yml'擴展的文件默認也會被添加到該列表。
 
 詳情參考[ConfigFileApplicationListener](http://github.com/spring-projects/spring-boot/tree/master/spring-boot/src/main/java/org/springframework/boot/context/config/ConfigFileApplicationListener.java)
 
-* 使用'short'命令行參數
+* 使用'short'命令列參數
 
-有些人喜歡使用（例如）`--port=9000`代替`--server.port=9000`來設置命令行配置屬性。你可以通過在application.properties中使用佔位符來啟用該功能，比如：
+有些人喜歡使用（例如）`--port=9000`代替`--server.port=9000`來設置命令列配置屬性。你可以通過在application.properties中使用佔位符來啟用該功能，比如：
 ```java
 server.port=${port:8080}
 ```
@@ -933,7 +933,7 @@ Spring Security也可以配置成針對所以或某些請求需要一個安全�
 
 * 重新加載靜態內容
 
-Spring Boot有很多用於熱加載的選項。使用IDE開發是一個不錯的方式，特別是需要調試的時候（所有的現代IDEs都允許重新加載靜態資源，通常也支援對變更的Java類進行熱交換）。[Maven和Gradle插件](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#build-tool-plugins)也支援命令行下的靜態文件熱加載。如果你使用其他高級工具編寫css/js，並使用外部的css/js編譯器，那你就可以充分利用該功能。
+Spring Boot有很多用於熱加載的選項。使用IDE開發是一個不錯的方式，特別是需要調試的時候（所有的現代IDEs都允許重新加載靜態資源，通常也支援對變更的Java類進行熱交換）。[Maven和Gradle插件](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#build-tool-plugins)也支援命令列下的靜態文件熱加載。如果你使用其他高級工具編寫css/js，並使用外部的css/js編譯器，那你就可以充分利用該功能。
 
 * 在不重啟容器的情況下重新加載Thymeleaf模板
 
@@ -959,7 +959,7 @@ Spring Boot有很多用於熱加載的選項。使用IDE開發是一個不錯的
 
 - 使用Maven配置Spring Loaded
 
-為了在Maven命令行下使用Spring Loaded，你隻需將它作為一個依賴添加到Spring Boot插件聲明中即可，比如：
+為了在Maven命令列下使用Spring Loaded，你隻需將它作為一個依賴添加到Spring Boot插件聲明中即可，比如：
 ```xml
 <plugin>
     <groupId>org.springframework.boot</groupId>
@@ -1000,7 +1000,7 @@ idea {
 
 // ...
 ```
-**注**：IntelliJ必須配置跟命令行Gradle任務相同的Java版本，並且springloaded必須作為一個buildscript依賴被包含進去。
+**注**：IntelliJ必須配置跟命令列Gradle任務相同的Java版本，並且springloaded必須作為一個buildscript依賴被包含進去。
 
 此外，你也可以啟用Intellij內部的`Make Project Automatically`，這樣不管什麼時候隻要文件被保存都會自動編譯你的代碼。
 
@@ -1178,7 +1178,7 @@ bootRepackage  {
 
 * 遠程調試一個使用Gradle啟動的Spring Boot項目
 
-想要為使用Gradle啟動的Spring Boot應用添加一個遠程調試器，你可以使用build.gradle的applicationDefaultJvmArgs屬性或`--debug-jvm`命令行選項。
+想要為使用Gradle啟動的Spring Boot應用添加一個遠程調試器，你可以使用build.gradle的applicationDefaultJvmArgs屬性或`--debug-jvm`命令列選項。
 
 build.gradle：
 ```gradle
@@ -1186,7 +1186,7 @@ applicationDefaultJvmArgs = [
     "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
 ]
 ```
-命令行：
+命令列：
 ```shell
 $ gradle run --debug-jvm
 ```
@@ -1288,7 +1288,7 @@ dependencies {
     // …
 }
 ```
-如果你使用[Spring Boot建構工具](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#build-tool-plugins)，將內嵌容器依賴標記為provided將產生一個可執行war包，在`lib-provided`目錄有該war包的provided依賴。這意味著，除了部署到servlet容器，你還可以通過使用命令行`java -jar`命令來運行應用。
+如果你使用[Spring Boot建構工具](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#build-tool-plugins)，將內嵌容器依賴標記為provided將產生一個可執行war包，在`lib-provided`目錄有該war包的provided依賴。這意味著，除了部署到servlet容器，你還可以通過使用命令列`java -jar`命令來運行應用。
 
 **注**：查看Spring Boot基於以上配置的一個[Maven範例應用](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-traditional/pom.xml)。
 

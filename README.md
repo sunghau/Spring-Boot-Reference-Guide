@@ -1,7 +1,7 @@
 # Spring-Boot-Reference-Guide 繁中翻譯
 Spring Boot Reference Guide繁中翻譯 -《Spring Boot參考指南》
 
-說明：本文件針對的是1.3.0版：[1.3.0.RELEASE](http://docs.spring.io/spring-boot/docs/1.3.0.RELEASE/reference/htmlsingle/)。
+說明：本文件針對的是1.3.0版：[1.3.0.BUILD-SNAPSHOT](http://docs.spring.io/spring-boot/docs/1.3.0.BUILD-SNAPSHOT/reference/htmlsingle/)。
 
 [文件目錄](SUMMARY.md)
 

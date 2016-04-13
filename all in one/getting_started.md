@@ -7,7 +7,7 @@
 Spring Boot使開發獨立的，產品級別的基於Spring的應用變得非常簡單，你隻需"just run"。
 我們為Spring平台及第三方庫提供開箱即用的設置，這樣你就可以有條不紊地開始。多數Spring Boot應用需要很少的Spring配置。
 
-你可以使用Spring Boot創建Java應用，並使用`java -jar`啟動它或采用傳統的war部署方式。我們也提供了一個運行"spring腳本"的命令行工具。
+你可以使用Spring Boot創建Java應用，並使用`java -jar`啟動它或采用傳統的war部署方式。我們也提供了一個運行"spring腳本"的命令列工具。
 
 我們主要的目標是：
 
@@ -38,7 +38,7 @@ Spring Boot使開發獨立的，產品級別的基於Spring的應用變得非常
 
 ### Spring Boot安裝
 
-Spring Boot可以跟典型的Java開發工具一塊使用或安裝為一個命令行工具。不管怎樣，你將需要安裝[Java SDK v1.6 ](http://www.java.com/)或更高版本。在開始之前，你需要檢查下當前安裝的Java版本：
+Spring Boot可以跟典型的Java開發工具一塊使用或安裝為一個命令列工具。不管怎樣，你將需要安裝[Java SDK v1.6 ](http://www.java.com/)或更高版本。在開始之前，你需要檢查下當前安裝的Java版本：
 ```shell
 $ java -version
 ```
@@ -166,7 +166,7 @@ dependencies {
 ```
 * Spring Boot CLI安裝
 
-Spring Boot是一個命令行工具，用於使用Spring進行快速原型搭建。它允許你運行[Groovy](http://groovy.codehaus.org/)腳本，這意味著你可以使用類Java的語法，並且沒有那麼多的模板代碼。
+Spring Boot是一個命令列工具，用於使用Spring進行快速原型搭建。它允許你運行[Groovy](http://groovy.codehaus.org/)腳本，這意味著你可以使用類Java的語法，並且沒有那麼多的模板代碼。
 
 你沒有必要為了使用Spring Boot而去用CLI，但它絕對是助力Spring應用的最快方式。
 
@@ -231,16 +231,16 @@ Homebrew將把`spring`安裝到`/usr/local/bin`下。
 ```shell
 $ sudo port install spring-boot-cli
 ```
-- 命令行實現
+- 命令列實現
 
-Spring Boot CLI啟動腳本為[BASH](http://en.wikipedia.org/wiki/Bash_%28Unix_shell%29)和[zsh](http://en.wikipedia.org/wiki/Zsh) shells提供完整的命令行實現。你可以在任何shell中`source`腳本（名稱也是`spring`），或將它放到你個人或系統範圍的bash實現初始化中。在一個Debian系統裡，系統範圍的腳本位於`/shell-completion/bash`下，當一個新的shell啟動時該目錄下的所有腳本都被執行。想要手動運行該腳本，例如，你已經使用`GVM`進行安裝了：
+Spring Boot CLI啟動腳本為[BASH](http://en.wikipedia.org/wiki/Bash_%28Unix_shell%29)和[zsh](http://en.wikipedia.org/wiki/Zsh) shells提供完整的命令列實現。你可以在任何shell中`source`腳本（名稱也是`spring`），或將它放到你個人或系統範圍的bash實現初始化中。在一個Debian系統裡，系統範圍的腳本位於`/shell-completion/bash`下，當一個新的shell啟動時該目錄下的所有腳本都被執行。想要手動運行該腳本，例如，你已經使用`GVM`進行安裝了：
 ```shell
 $ . ~/.gvm/springboot/current/shell-completion/bash/spring
 $ spring <HIT TAB HERE>
   grab  help  jar  run  test  version
 ```
 
-**注**：如果你使用Homebrew或MacPorts安裝Spring Boot CLI，命令行實現腳本會自動注冊到你的shell。
+**注**：如果你使用Homebrew或MacPorts安裝Spring Boot CLI，命令列實現腳本會自動注冊到你的shell。
 
 - Spring CLI範例快速入門
 
@@ -404,7 +404,7 @@ public class Example {
 
 * main方法
 
-我們的應用程序最後部分是`main`方法。這只是一個標準的方法，它遵循Java對於一個應用程序入口點的約定。我們的main方法通過調用`run`，將業務委托給了Spring Boot的`SpringApplication`類。`SpringApplication`將引導我們的應用，啟動Spring，相應地啟動被自動配置的Tomcat web服務器。我們需要將`Example.class`作為參數傳遞給`run`方法來告訴`SpringApplication`誰是主要的Spring組件。為了暴露任何的命令行參數，`args`數組也會被傳遞過去。
+我們的應用程序最後部分是`main`方法。這只是一個標準的方法，它遵循Java對於一個應用程序入口點的約定。我們的main方法通過調用`run`，將業務委托給了Spring Boot的`SpringApplication`類。`SpringApplication`將引導我們的應用，啟動Spring，相應地啟動被自動配置的Tomcat web服務器。我們需要將`Example.class`作為參數傳遞給`run`方法來告訴`SpringApplication`誰是主要的Spring組件。為了暴露任何的命令列參數，`args`數組也會被傳遞過去。
 
 ### 運行範例
 
@@ -449,7 +449,7 @@ Hello World!
 ```
 **注**：`spring-boot-starter-parent` POM包含用於綁定`repackage`目標的`<executions>`配置。如果你不使用parent POM，你將需要自己聲明該配置。具體參考[插件文件](http://docs.spring.io/spring-boot/docs/1.3.0.BUILD-SNAPSHOT/maven-plugin/usage.html)。
 
-保存你的`pom.xml`，然後從命令行運行`mvn package`：
+保存你的`pom.xml`，然後從命令列運行`mvn package`：
 ```shell
 $ mvn package
 

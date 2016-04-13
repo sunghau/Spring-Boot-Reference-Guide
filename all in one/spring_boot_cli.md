@@ -1,6 +1,6 @@
 ### Spring Boot CLI
 
-Spring Boot CLI是一個命令行工具，如果想使用Spring進行快速開發可以使用它。它允許你運行Groovy腳本，這意味著你可以使用熟悉的類Java語法，並且沒有那麼多的模板代碼。你也可以啟動一個新的工程或為Spring Boot CLI編寫自己的命令。
+Spring Boot CLI是一個命令列工具，如果想使用Spring進行快速開發可以使用它。它允許你運行Groovy腳本，這意味著你可以使用熟悉的類Java語法，並且沒有那麼多的模板代碼。你也可以啟動一個新的工程或為Spring Boot CLI編寫自己的命令。
 
 ### 安裝CLI
 
@@ -68,11 +68,11 @@ class WebApplication {
 ```shell
 $ spring run hello.groovy
 ```
-想要給應用傳遞命令行參數，你需要使用一個`--`來將它們和"spring"命令參數區分開來。例如：
+想要給應用傳遞命令列參數，你需要使用一個`--`來將它們和"spring"命令參數區分開來。例如：
 ```shell
 $ spring run hello.groovy -- --server.port=9000
 ```
-想要設置JVM命令行參數，你可以使用`JAVA_OPTS`環境變量，例如：
+想要設置JVM命令列參數，你可以使用`JAVA_OPTS`環境變量，例如：
 ```shell
 $ JAVA_OPTS=-Xmx1024m spring run hello.groovy
 ```
@@ -227,7 +227,7 @@ Content saved to 'sample-app.zip'
 ```
 * 使用內嵌shell
 
-Spring Boot包括完整的BASH和zsh shells的命令行腳本。如果你不使用它們中的任何一個（可能你是一個Window用戶），那你可以使用`shell`命令啟用一個整合shell。
+Spring Boot包括完整的BASH和zsh shells的命令列腳本。如果你不使用它們中的任何一個（可能你是一個Window用戶），那你可以使用`shell`命令啟用一個整合shell。
 ```shell
 $ spring shell
 Spring Boot (v1.3.0.BUILD-SNAPSHOT)

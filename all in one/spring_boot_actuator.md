@@ -496,7 +496,7 @@ public class MyService {
 
 用戶可以通過使用合適類型的指標名稱作為前綴來創建Dropwizard指標（比如，`histogram.*`, `meter.*`）。
 
-* 消息渠道整合
+* 訊息渠道整合
 
 如果你的classpath下存在'Spring Messaging' jar，一個名為`metricsChannel`的`MessageChannel`將被自動創建（除非已經存在一個）。此外，所有的指標更新事件作為'messages'發布到該渠道上。訂閱該渠道的客戶端可以進行額外的分析或行動。
 

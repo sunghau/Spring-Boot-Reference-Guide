@@ -69,9 +69,9 @@ new SpringApplicationBuilder()
 
 **注**：當JUnit測試裡使用SpringApplication時，調用setWebEnvironment(false)是可取的。
 
-* 命令行啟動器
+* 命令列啟動器
 
-如果你想獲取原始的命令行參數，或一旦SpringApplication啟動，你需要運行一些特定的代碼，你可以實現CommandLineRunner接口。在所有實現該接口的Spring beans上將調用run(String… args)方法。
+如果你想獲取原始的命令列參數，或一旦SpringApplication啟動，你需要運行一些特定的代碼，你可以實現CommandLineRunner接口。在所有實現該接口的Spring beans上將調用run(String… args)方法。
 ```java
 import org.springframework.boot.*
 import org.springframework.stereotype.*
@@ -93,11 +93,11 @@ public class MyBean implements CommandLineRunner {
 
 ### 外化配置
 
-Spring Boot允許外化（externalize）你的配置，這樣你能夠在不同的環境下使用相同的代碼。你可以使用properties文件，YAML文件，環境變量和命令行參數來外化配置。使用@Value注解，可以直接將屬性值注入到你的beans中，並通過Spring的Environment抽象或綁定到結構化對象來訪問。
+Spring Boot允許外化（externalize）你的配置，這樣你能夠在不同的環境下使用相同的代碼。你可以使用properties文件，YAML文件，環境變量和命令列參數來外化配置。使用@Value注解，可以直接將屬性值注入到你的beans中，並通過Spring的Environment抽象或綁定到結構化對象來訪問。
 
 Spring Boot使用一個非常特別的PropertySource次序來允許對值進行合理的覆蓋，需要以下面的次序考慮屬性：
 
-1. 命令行參數
+1. 命令列參數
 2. 來自於java:comp/env的JNDI屬性
 3. Java系統屬性（System.getProperties()）
 4. 操作系統環境變量
@@ -119,7 +119,7 @@ public class MyBean {
     // ...
 }
 ```
-你可以將一個application.properties文件捆綁到jar內，用來提供一個合理的默認name屬性值。當運行在生產環境時，可以在jar外提供一個application.properties文件來覆蓋name屬性。對於一次性的測試，你可以使用特定的命令行開關啟動（比如，java -jar app.jar --name="Spring"）。
+你可以將一個application.properties文件捆綁到jar內，用來提供一個合理的默認name屬性值。當運行在生產環境時，可以在jar外提供一個application.properties文件來覆蓋name屬性。對於一次性的測試，你可以使用特定的命令列開關啟動（比如，java -jar app.jar --name="Spring"）。
 
 RandomValuePropertySource在注入隨機值（比如，密鑰或測試用例）時很有用。它能產生整數，longs或字符串，比如：
 ```java
@@ -131,11 +131,11 @@ my.number.in.range=${random.int[1024,65536]}
 ```
 random.int*語法是OPEN value (,max) CLOSE，此處OPEN，CLOSE可以是任何字符，並且value，max是整數。如果提供max，那麼value是最小的值，max是最大的值（不包含在內）。
 
-* 訪問命令行屬性
+* 訪問命令列屬性
 
-默認情況下，SpringApplication將任何可選的命令行參數（以'--'開頭，比如，--server.port=9000）轉化為property，並將其添加到Spring Environment中。如上所述，命令行屬性總是優先於其他屬性源。
+默認情況下，SpringApplication將任何可選的命令列參數（以'--'開頭，比如，--server.port=9000）轉化為property，並將其添加到Spring Environment中。如上所述，命令列屬性總是優先於其他屬性源。
 
-如果你不想將命令行屬性添加到Environment裡，你可以使用SpringApplication.setAddCommandLineProperties(false)來禁止它們。
+如果你不想將命令列屬性添加到Environment裡，你可以使用SpringApplication.setAddCommandLineProperties(false)來禁止它們。
 
 * Application屬性文件
 
@@ -359,13 +359,13 @@ public class ProductionConfiguration {
 ```java
 spring.profiles.active=dev,hsqldb
 ```
-或使用命令行開關：
+或使用命令列開關：
 ```shell
 --spring.profiles.active=dev,hsqldb
 ```
 * 添加啟動的配置(profiles)
 
-spring.profiles.active屬性和其他屬性一樣都遵循相同的排列規則，最高的PropertySource獲勝。也就是說，你可以在application.properties中指定生效的配置，然後使用命令行開關替換它們。
+spring.profiles.active屬性和其他屬性一樣都遵循相同的排列規則，最高的PropertySource獲勝。也就是說，你可以在application.properties中指定生效的配置，然後使用命令列開關替換它們。
 
 有時，將特定的配置屬性添加到生效的配置中而不是替換它們是有用的。spring.profiles.include屬性可以用來無條件的添加生效的配置。SpringApplication的入口點也提供了一個用於設置額外配置的Java API（比如，在那些通過spring.profiles.active屬性生效的配置之上）：參考setAdditionalProfiles()方法。
 
@@ -416,7 +416,7 @@ Spring Boot默認的日誌輸出格式如下：
 
 * 控製台輸出
 
-默認的日誌配置會在寫日誌消息時將它們回顯到控製台。默認，ERROR, WARN和INFO級別的消息會被記錄。可以在啟動應用時，通過`--debug`標識開啟控製台的DEBUG級別日誌記錄。
+默認的日誌配置會在寫日誌訊息時將它們回顯到控製台。默認，ERROR, WARN和INFO級別的訊息會被記錄。可以在啟動應用時，通過`--debug`標識開啟控製台的DEBUG級別日誌記錄。
 ```shell
 $ java -jar myapp.jar --debug
 ```
@@ -915,7 +915,7 @@ Spring Data提供其他項目，用來幫你使用各種各樣的NoSQL技術，�
 
 * Redis
 
-[Redis](http://redis.io/)是一個緩存，消息中間件及具有豐富特性的鍵值存儲系統。Spring Boot為[Jedis](https://github.com/xetorthio/jedis/)客戶端庫和由[Spring Data Redis](https://github.com/spring-projects/spring-data-redis)提供的基於Jedis客戶端的抽象提供自動配置。`spring-boot-starter-redis`'Starter POM'為收集依賴提供一種便利的方式。
+[Redis](http://redis.io/)是一個緩存，訊息中間件及具有豐富特性的鍵值存儲系統。Spring Boot為[Jedis](https://github.com/xetorthio/jedis/)客戶端庫和由[Spring Data Redis](https://github.com/spring-projects/spring-data-redis)提供的基於Jedis客戶端的抽象提供自動配置。`spring-boot-starter-redis`'Starter POM'為收集依賴提供一種便利的方式。
 
 1. 連接Redis
 
@@ -1077,13 +1077,13 @@ Spring Data的倉庫包括了對Elasticsearch的支援。正如上麵討論的JP
 
 **注**：具體參考[Spring Data Elasticsearch文件](http://docs.spring.io/spring-data/elasticsearch/docs/)。
   
-### 消息
+### 訊息
 
-Spring Framework框架為整合消息系統提供了擴展（extensive）支援：從使用JmsTemplate簡化JMS　API，到實現一個完整異步消息接收的底層設施。Spring AMQP提供一個相似的用於'高級消息隊列協議'的特征集，並且Spring Boot也為RabbitTemplate和RabbitMQ提供了自動配置選項。Spring Websocket提供原生的STOMP消息支援，並且Spring Boot通過starters和一些自動配置也提供了對它的支援。
+Spring Framework框架為整合訊息系統提供了擴展（extensive）支援：從使用JmsTemplate簡化JMS　API，到實現一個完整異步訊息接收的底層設施。Spring AMQP提供一個相似的用於'高級訊息隊列協議'的特征集，並且Spring Boot也為RabbitTemplate和RabbitMQ提供了自動配置選項。Spring Websocket提供原生的STOMP訊息支援，並且Spring Boot通過starters和一些自動配置也提供了對它的支援。
 
 * JMS
 
-javax.jms.ConnectionFactory接口提供了一個標準的用於創建一個javax.jms.Connection的方法，javax.jms.Connection用於和JMS代理（broker）交互。盡管為了使用JMS，Spring需要一個ConnectionFactory，但通常你不需要直接使用它，而是依賴於上層消息抽象（具體參考Spring框架的[相關章節](http://docs.spring.io/spring/docs/4.1.4.RELEASE/spring-framework-reference/htmlsingle/#jms)）。Spring Boot也會自動配置發送和接收消息需要的設施（infrastructure）。
+javax.jms.ConnectionFactory接口提供了一個標準的用於創建一個javax.jms.Connection的方法，javax.jms.Connection用於和JMS代理（broker）交互。盡管為了使用JMS，Spring需要一個ConnectionFactory，但通常你不需要直接使用它，而是依賴於上層訊息抽象（具體參考Spring框架的[相關章節](http://docs.spring.io/spring/docs/4.1.4.RELEASE/spring-framework-reference/htmlsingle/#jms)）。Spring Boot也會自動配置發送和接收訊息需要的設施（infrastructure）。
  
  1. HornetQ支援
 
@@ -1122,7 +1122,7 @@ XAConnectionFactory。如果需要的話，你可以使用spring.jms.jndi-name�
 ```java
 spring.jms.jndi-name=java:/MyConnectionFactory
 ```
-  4. 發送消息
+  4. 發送訊息
 
 Spring的JmsTemplate會被自動配置，你可以將它直接注入到你自己的beans中：
 ```java
@@ -1142,7 +1142,7 @@ this.jmsTemplate = jmsTemplate;
 
 **注**：[JmsMessagingTemplate](http://docs.spring.io/spring/docs/4.1.4.RELEASE/javadoc-api/org/springframework/jms/core/JmsMessagingTemplate.html)(Spring4.1新增的)也可以使用相同的方式注入。
 
-  5. 接收消息
+  5. 接收訊息
 
 當JMS基礎設施能夠使用時，任何bean都能夠被@JmsListener注解，以創建一個監聽者端點。如果沒有定義JmsListenerContainerFactory，一個默認的將會被自動配置。下面的組件在someQueue目標上創建一個監聽者端點。
 ```java
@@ -1191,7 +1191,7 @@ Bitronix是另一個流行的開源JTA事務管理器實現。你可以使用`sp
 
 * 混合XA和non-XA的JMS連接
 
-當使用JTA時，主要的JMS ConnectionFactory bean將是XA　aware，並參與到分布式事務中。有些情況下，你可能需要使用non-XA的ConnectionFactory去處理一些JMS消息。例如，你的JMS處理邏輯可能比XA超時時間長。
+當使用JTA時，主要的JMS ConnectionFactory bean將是XA　aware，並參與到分布式事務中。有些情況下，你可能需要使用non-XA的ConnectionFactory去處理一些JMS訊息。例如，你的JMS處理邏輯可能比XA超時時間長。
 
 如果想使用一個non-XA的ConnectionFactory，你可以注入nonXaJmsConnectionFactory　bean而不是@Primary jmsConnectionFactory　bean。為了保持一致，jmsConnectionFactory　bean將以別名xaJmsConnectionFactor來被使用。
 
@@ -1215,7 +1215,7 @@ private ConnectionFactory nonXaConnectionFactory;
 
 ### Spring整合
 
-Spring整合提供基於消息和其他協議的，比如HTTP，TCP等的抽象。如果Spring整合在classpath下可用，它將會通過@EnableIntegration注解被初始化。如果classpath下'spring-integration-jmx'可用，則消息處理統計分析將被通過JMX發布出去。具體參考[IntegrationAutoConfiguration類](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/integration/IntegrationAutoConfiguration.java)。
+Spring整合提供基於訊息和其他協議的，比如HTTP，TCP等的抽象。如果Spring整合在classpath下可用，它將會通過@EnableIntegration注解被初始化。如果classpath下'spring-integration-jmx'可用，則訊息處理統計分析將被通過JMX發布出去。具體參考[IntegrationAutoConfiguration類](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/integration/IntegrationAutoConfiguration.java)。
 
 ### 基於JMX的監控和管理
 

@@ -125,7 +125,7 @@ Starter POMs是可以包含到應用中的一個方便的依賴關係描述符�
 |------|:-----|
 |spring-boot-starter|核心Spring Boot starter，包括自動配置支援，日誌和YAML|
 |spring-boot-starter-actuator|生產準備的特性，用於幫你監控和管理應用|
-|spring-boot-starter-amqp|對"高級消息隊列協議"的支援，通過`spring-rabbit`實現|
+|spring-boot-starter-amqp|對"高級訊息隊列協議"的支援，通過`spring-rabbit`實現|
 |spring-boot-starter-aop|對麵向切麵程式的支援，包括`spring-aop`和AspectJ|
 |spring-boot-starter-batch|對Spring Batch的支援，包括HSQLDB數據庫|
 |spring-boot-starter-cloud-connectors|對Spring Cloud Connectors的支援，簡化在雲平台下（例如，Cloud Foundry 和Heroku）服務的連接|
@@ -138,7 +138,7 @@ Starter POMs是可以包含到應用中的一個方便的依賴關係描述符�
 |spring-boot-starter-freemarker|對FreeMarker模板引擎的支援|
 |spring-boot-starter-groovy-templates|對Groovy模板引擎的支援|
 |spring-boot-starter-hateoas|對基於HATEOAS的RESTful服務的支援，通過`spring-hateoas`實現|
-|spring-boot-starter-hornetq|對"Java消息服務API"的支援，通過HornetQ實現|
+|spring-boot-starter-hornetq|對"Java訊息服務API"的支援，通過HornetQ實現|
 |spring-boot-starter-integration|對普通`spring-integration`模塊的支援|
 |spring-boot-starter-jdbc|對JDBC數據庫的支援|
 |spring-boot-starter-jersey|對Jersey RESTful Web服務框架的支援|
