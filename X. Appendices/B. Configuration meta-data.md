@@ -1,6 +1,6 @@
-### 附录B. 配置元数据
+### 附錄B. 配置元數據
 
-Spring Boot jars包含元数据文件，它们提供了所有支持的配置属性详情。这些文件设计用于让IDE开发者能够为使用application.properties或application.yml文件的用户提供上下文帮助及代码完成功能。
+Spring Boot jars包含元數據文件，它們提供了所有支援的配置屬性詳情。這些文件設計用於讓IDE開發者能夠為使用application.properties或application.yml文件的用戶提供上下文幫助及代碼完成功能。
 
 
-主要的元数据文件是在编译器通过处理所有被`@ConfigurationProperties`注解的节点来自动生成的。
+主要的元數據文件是在編譯器通過處理所有被`@ConfigurationProperties`注解的節點來自動生成的。

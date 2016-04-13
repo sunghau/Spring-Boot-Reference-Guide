@@ -1,4 +1,4 @@
-### 附录D.5. 可执行jar的限制
+### 附錄D.5. 可執行jar的限製
 
-当使用Spring Boot Loader打包的应用时有一些你需要考虑的限制。
+當使用Spring Boot Loader打包的應用時有一些你需要考慮的限製。
 

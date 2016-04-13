@@ -1,6 +1,6 @@
-### 附录D.1.1 可执行jar文件结构
+### 附錄D.1.1 可執行jar文件結構
 
-Spring Boot Loader兼容的jar文件应该遵循以下结构：
+Spring Boot Loader兼容的jar文件應該遵循以下結構：
 
 ```java
 example.jar
@@ -20,5 +20,5 @@ example.jar
     +-dependency1.jar
     +-dependency2.jar
 ```
-依赖需要放到内部的lib目录下。
+依賴需要放到內部的lib目錄下。
 

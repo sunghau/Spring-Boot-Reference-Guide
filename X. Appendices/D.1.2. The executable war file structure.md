@@ -1,6 +1,6 @@
-### 附录D.1.2. 可执行war文件结构
+### 附錄D.1.2. 可執行war文件結構
 
-Spring Boot Loader兼容的war文件应该遵循以下结构：
+Spring Boot Loader兼容的war文件應該遵循以下結構：
 ```java
 example.jar
  |
@@ -24,4 +24,4 @@ example.jar
        +-servlet-api.jar
        +-dependency3.jar
 ```
-依赖需要放到内嵌的`WEB-INF/lib`目录下。任何运行时需要但部署到普通web容器不需要的依赖应该放到`WEB-INF/lib-provided`目录下。
+依賴需要放到內嵌的`WEB-INF/lib`目錄下。任何運行時需要但部署到普通web容器不需要的依賴應該放到`WEB-INF/lib-provided`目錄下。

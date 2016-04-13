@@ -1,8 +1,8 @@
-Spring Boot初级教程
+Spring Boot初級教程
 =======================
 
-### 一. Spring Boot安装
-环境要求：Java 8，Maven 3.2或Gradle 1.12
+### 一. Spring Boot安裝
+環境要求：Java 8，Maven 3.2或Gradle 1.12
 
 #### 1.Maven方式
 <pre>
@@ -43,11 +43,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
     &lt;/build&gt;
 &lt;/project&gt;
 </pre>
-注：Spring Boot依赖的groupId是org.springframework.boot，一般Maven pom需要继承spring-boot-starter-parent，然后声明相应[Starter POMs](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-starter-poms).如果不想继承spring-boot-starter-parent，可以使用import作用域。
+注：Spring Boot依賴的groupId是org.springframework.boot，一般Maven pom需要繼承spring-boot-starter-parent，然後聲明相應[Starter POMs](http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-starter-poms).如果不想繼承spring-boot-starter-parent，可以使用import作用域。
 
 #### 2.Gradle方式
 
-build.gradle脚本：
+build.gradle腳本：
 <pre>
 buildscript {
     repositories {
@@ -80,7 +80,7 @@ dependencies {
 }
 </pre>
 
-#### 3.安装Spring Boot命令行工具
+#### 3.安裝Spring Boot命令行工具
 
 <pre>
 $ gvm install springboot
@@ -93,7 +93,7 @@ $ spring <HIT TAB HERE>
 
 #### 4.Quick Start
 
-创建app.groovy，代码如下：
+創建app.groovy，代碼如下：
 <pre>
 @RestController
 class ThisWillActuallyRun {
@@ -103,7 +103,7 @@ class ThisWillActuallyRun {
     }
 }
 </pre>
-运行：
+運行：
 <pre>
 $ spring run app.groovy
 </pre>

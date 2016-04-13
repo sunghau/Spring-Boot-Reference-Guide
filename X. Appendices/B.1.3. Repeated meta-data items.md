@@ -1,3 +1,3 @@
-### 附录B.1.3. 可重复的元数据节点
+### 附錄B.1.3. 可重複的元數據節點
 
-在同一个元数据文件中出现多次相同名称的"property"和"group"对象是可以接受的。例如，Spring Boot将`spring.datasource`属性绑定到Hikari，Tomcat和DBCP类，并且每个都潜在的提供了重复的属性名。这些元数据的消费者需要确保他们支持这样的场景。
+在同一個元數據文件中出現多次相同名稱的"property"和"group"對象是可以接受的。例如，Spring Boot將`spring.datasource`屬性綁定到Hikari，Tomcat和DBCP類，並且每個都潛在的提供了重複的屬性名。這些元數據的消費者需要確保他們支援這樣的場景。

@@ -1,6 +1,6 @@
-### 附录D.2. Spring Boot的"JarFile"类
+### 附錄D.2. Spring Boot的"JarFile"類
 
-Spring Boot用于支持加载内嵌jars的核心类是`org.springframework.boot.loader.jar.JarFile`。它允许你从一个标准的jar文件或内嵌的子jar数据中加载jar内容。当首次加载的时候，每个JarEntry的位置被映射到一个偏移于外部jar的物理文件：
+Spring Boot用於支援加載內嵌jars的核心類是`org.springframework.boot.loader.jar.JarFile`。它允許你從一個標準的jar文件或內嵌的子jar數據中加載jar內容。當首次加載的時候，每個JarEntry的位置被映射到一個偏移於外部jar的物理文件：
 ```java
 myapp.jar
 +---------+---------------------+
@@ -12,6 +12,6 @@ myapp.jar
 ^          ^          ^
 0063       3452       3980
 ```
-上面的示例展示了如何在myapp.jar的0063处找到A.class。来自于内嵌jar的B.class实际可以在myapp.jar的3452处找到，B.class可以在3980处找到（图有问题？）。
+上麵的範例展示了如何在myapp.jar的0063處找到A.class。來自於內嵌jar的B.class實際可以在myapp.jar的3452處找到，B.class可以在3980處找到（圖有問題？）。
 
-有了这些信息，我们就可以通过简单的寻找外部jar的合适部分来加载指定的内嵌实体。我们不需要解压存档，也不需要将所有实体读取到内存中。
+有了這些信息，我們就可以通過簡單的尋找外部jar的合適部分來加載指定的內嵌實體。我們不需要解壓存檔，也不需要將所有實體讀取到內存中。

@@ -1,6 +1,6 @@
-### 附录D.3.2. 暴露的存档
+### 附錄D.3.2. 暴露的存檔
 
-一些PaaS实现可能选择在运行前先解压存档。例如，Cloud Foundry就是这样操作的。你可以运行一个解压的存档，只需简单的启动合适的启动器：
+一些PaaS實現可能選擇在運行前先解壓存檔。例如，Cloud Foundry就是這樣操作的。你可以運行一個解壓的存檔，隻需簡單的啟動合適的啟動器：
 ```shell
 $ unzip -q myapp.jar
 $ java org.springframework.boot.loader.JarLaunche

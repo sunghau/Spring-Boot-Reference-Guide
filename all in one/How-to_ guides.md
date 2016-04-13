@@ -1,85 +1,85 @@
 ### How-to指南
 
-本章节将回答一些常见的"我该怎么做"类型的问题，这些问题在我们使用Spring Boot时经常遇到。这绝不是一个详尽的列表，但它覆盖了很多方面。
+本章節將回答一些常見的"我該怎麼做"類型的問題，這些問題在我們使用Spring Boot時經常遇到。這絕不是一個詳盡的列表，但它覆蓋了很多方麵。
 
-如果遇到一个特殊的我们没有覆盖的问题，你可能想去查看[stackoverflow.com](http://stackoverflow.com/tags/spring-boot)，看是否有人已经给出了答案;这也是一个很好的提新问题的地方（请使用`spring-boot`标签）。
+如果遇到一個特殊的我們沒有覆蓋的問題，你可能想去查看[stackoverflow.com](http://stackoverflow.com/tags/spring-boot)，看是否有人已經給出了答案;這也是一個很好的提新問題的地方（請使用`spring-boot`標簽）。
 
-我们也乐意扩展本章节;如果想添加一个'how-to'，你可以给我们发一个[pull请求](http://github.com/spring-projects/spring-boot/tree/master)。
+我們也樂意擴展本章節;如果想添加一個'how-to'，你可以給我們發一個[pull請求](http://github.com/spring-projects/spring-boot/tree/master)。
 
-### Spring Boot应用
+### Spring Boot應用
 
-* 解决自动配置问题
+* 解決自動配置問題
 
-Spring Boot自动配置总是尝试尽最大努力去做正确的事，但有时候会失败并且很难说出失败原因。
+Spring Boot自動配置總是嘗試盡最大努力去做正確的事，但有時候會失敗並且很難說出失敗原因。
 
-在每个Spring Boot `ApplicationContext`中都存在一个相当有用的`ConditionEvaluationReport`。如果开启`DEBUG`日志输出，你将会看到它。如果你使用`spring-boot-actuator`，则会有一个`autoconfig`的端点，它将以JSON形式渲染该报告。可以使用它调试应用程序，并能查看Spring Boot运行时都添加了哪些特性（及哪些没添加）。
+在每個Spring Boot `ApplicationContext`中都存在一個相當有用的`ConditionEvaluationReport`。如果開啟`DEBUG`日誌輸出，你將會看到它。如果你使用`spring-boot-actuator`，則會有一個`autoconfig`的端點，它將以JSON形式渲染該報告。可以使用它調試應用程序，並能查看Spring Boot運行時都添加了哪些特性（及哪些沒添加）。
 
-通过查看源码和javadoc可以获取更多问题的答案。以下是一些经验：
+通過查看源碼和javadoc可以獲取更多問題的答案。以下是一些經驗：
 
-1. 查找名为`*AutoConfiguration`的类并阅读源码，特别是`@Conditional*`注解，这可以帮你找出它们启用哪些特性及何时启用。
-将`--debug`添加到命令行或添加系统属性`-Ddebug`可以在控制台查看日志，该日志会记录你的应用中所有自动配置的决策。在一个运行的Actuator app中，通过查看`autoconfig`端点（`/autoconfig`或等效的JMX）可以获取相同信息。
-2. 查找是`@ConfigurationProperties`的类（比如[ServerProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/ServerProperties.java)）并看下有哪些可用的外部配置选项。`@ConfigurationProperties`类有一个用于充当外部配置前缀的`name`属性，因此`ServerProperties`的值为`prefix="server"`，它的配置属性有`server.port`，`server.address`等。在运行的Actuator应用中可以查看`configprops`端点。
-3. 查看使用`RelaxedEnvironment`明确地将配置从`Environment`暴露出去。它经常会使用一个前缀。
-4. 查看`@Value`注解，它直接绑定到`Environment`。相比`RelaxedEnvironment`，这种方式稍微缺乏灵活性，但它也允许松散的绑定，特别是OS环境变量（所以`CAPITALS_AND_UNDERSCORES`是`period.separated`的同义词）。
-5. 查看`@ConditionalOnExpression`注解，它根据SpEL表达式的结果来开启或关闭特性，通常使用解析自`Environment`的占位符进行计算。
+1. 查找名為`*AutoConfiguration`的類並閱讀源碼，特別是`@Conditional*`注解，這可以幫你找出它們啟用哪些特性及何時啟用。
+將`--debug`添加到命令行或添加系統屬性`-Ddebug`可以在控製台查看日誌，該日誌會記錄你的應用中所有自動配置的決策。在一個運行的Actuator app中，通過查看`autoconfig`端點（`/autoconfig`或等效的JMX）可以獲取相同信息。
+2. 查找是`@ConfigurationProperties`的類（比如[ServerProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/ServerProperties.java)）並看下有哪些可用的外部配置選項。`@ConfigurationProperties`類有一個用於充當外部配置前綴的`name`屬性，因此`ServerProperties`的值為`prefix="server"`，它的配置屬性有`server.port`，`server.address`等。在運行的Actuator應用中可以查看`configprops`端點。
+3. 查看使用`RelaxedEnvironment`明確地將配置從`Environment`暴露出去。它經常會使用一個前綴。
+4. 查看`@Value`注解，它直接綁定到`Environment`。相比`RelaxedEnvironment`，這種方式稍微缺乏靈活性，但它也允許鬆散的綁定，特別是OS環境變量（所以`CAPITALS_AND_UNDERSCORES`是`period.separated`的同義詞）。
+5. 查看`@ConditionalOnExpression`注解，它根據SpEL表達式的結果來開啟或關閉特性，通常使用解析自`Environment`的佔位符進行計算。
 
-6. 启动前自定义Environment或ApplicationContext
+6. 啟動前自定義Environment或ApplicationContext
 
-每个`SpringApplication`都有`ApplicationListeners`和`ApplicationContextInitializers`，用于自定义上下文（context）或环境(environment)。Spring Boot从`META-INF/spring.factories`下加载很多这样的内部使用的自定义。有很多方法可以注册其他的自定义：
+每個`SpringApplication`都有`ApplicationListeners`和`ApplicationContextInitializers`，用於自定義上下文（context）或環境(environment)。Spring Boot從`META-INF/spring.factories`下加載很多這樣的內部使用的自定義。有很多方法可以注冊其他的自定義：
 
-1. 以编程方式为每个应用注册自定义，通过在SpringApplication运行前调用它的`addListeners`和`addInitializers`方法来实现。
-2. 以声明方式为每个应用注册自定义，通过设置`context.initializer.classes`或`context.listener.classes`来实现。
-3. 以声明方式为所有应用注册自定义，通过添加一个`META-INF/spring.factories`并打包成一个jar文件（该应用将它作为一个库）来实现。
+1. 以程式方式為每個應用注冊自定義，通過在SpringApplication運行前調用它的`addListeners`和`addInitializers`方法來實現。
+2. 以聲明方式為每個應用注冊自定義，通過設置`context.initializer.classes`或`context.listener.classes`來實現。
+3. 以聲明方式為所有應用注冊自定義，通過添加一個`META-INF/spring.factories`並打包成一個jar文件（該應用將它作為一個庫）來實現。
 
-`SpringApplication`会给监听器（即使是在上下文被创建之前就存在的）发送一些特定的`ApplicationEvents`，然后也会注册监听`ApplicationContext`发布的事件的监听器。查看Spring Boot特性章节中的[Section 22.4, “Application events and listeners” ](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-application-events-and-listeners)可以获取一个完整列表。
+`SpringApplication`會給監聽器（即使是在上下文被創建之前就存在的）發送一些特定的`ApplicationEvents`，然後也會注冊監聽`ApplicationContext`發布的事件的監聽器。查看Spring Boot特性章節中的[Section 22.4, “Application events and listeners” ](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-application-events-and-listeners)可以獲取一個完整列表。
 
-* 构建ApplicationContext层次结构（添加父或根上下文）
+* 建構ApplicationContext層次結構（添加父或根上下文）
 
-你可以使用`ApplicationBuilder`类创建父/根`ApplicationContext`层次结构。查看'Spring Boot特性'章节的[Section 22.3, “Fluent builder API” ](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-fluent-builder-api)获取更多信息。
+你可以使用`ApplicationBuilder`類創建父/根`ApplicationContext`層次結構。查看'Spring Boot特性'章節的[Section 22.3, “Fluent builder API” ](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-fluent-builder-api)獲取更多信息。
 
-* 创建一个非web（non-web）应用
+* 創建一個非web（non-web）應用
 
-不是所有的Spring应用都必须是web应用（或web服务）。如果你想在main方法中执行一些代码，但需要启动一个Spring应用去设置需要的底层设施，那使用Spring Boot的`SpringApplication`特性可以很容易实现。`SpringApplication`会根据它是否需要一个web应用来改变它的`ApplicationContext`类。首先你需要做的是去掉servlet API依赖，如果不能这样做（比如，基于相同的代码运行两个应用），那你可以明确地调用`SpringApplication.setWebEnvironment(false)`或设置`applicationContextClass`属性（通过Java API或使用外部配置）。你想运行的，作为业务逻辑的应用代码可以实现为一个`CommandLineRunner`，并将上下文降级为一个`@Bean`定义。
+不是所有的Spring應用都必須是web應用（或web服務）。如果你想在main方法中執行一些代碼，但需要啟動一個Spring應用去設置需要的底層設施，那使用Spring Boot的`SpringApplication`特性可以很容易實現。`SpringApplication`會根據它是否需要一個web應用來改變它的`ApplicationContext`類。首先你需要做的是去掉servlet API依賴，如果不能這樣做（比如，基於相同的代碼運行兩個應用），那你可以明確地調用`SpringApplication.setWebEnvironment(false)`或設置`applicationContextClass`屬性（通過Java API或使用外部配置）。你想運行的，作為業務邏輯的應用代碼可以實現為一個`CommandLineRunner`，並將上下文降級為一個`@Bean`定義。
 
-### 属性&配置
+### 屬性&配置
 
 * 外部化SpringApplication配置
 
-SpringApplication已经被属性化（主要是setters），所以你可以在创建应用时使用它的Java API修改它的行为。或者你可以使用properties文件中的`spring.main.*`来外部化（在应用代码外配置）这些配置。比如，在`application.properties`中可能会有以下内容：
+SpringApplication已經被屬性化（主要是setters），所以你可以在創建應用時使用它的Java API修改它的行為。或者你可以使用properties文件中的`spring.main.*`來外部化（在應用代碼外配置）這些配置。比如，在`application.properties`中可能會有以下內容：
 ```java
 spring.main.web_environment=false
 spring.main.show_banner=false
 ```
-然后Spring Boot在启动时将不会显示banner，并且该应用也不是一个web应用。
+然後Spring Boot在啟動時將不會顯示banner，並且該應用也不是一個web應用。
 
-* 改变应用程序外部配置文件的位置
+* 改變應用程序外部配置文件的位置
 
-默认情况下，来自不同源的属性以一个定义好的顺序添加到Spring的`Environment`中（查看'Sprin Boot特性'章节的[Chapter 23, Externalized Configuration](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-external-config)获取精确的顺序）。
+默認情況下，來自不同源的屬性以一個定義好的順序添加到Spring的`Environment`中（查看'Sprin Boot特性'章節的[Chapter 23, Externalized Configuration](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-external-config)獲取精確的順序）。
 
-为应用程序源添加`@PropertySource`注解是一种很好的添加和修改源顺序的方法。传递给`SpringApplication`静态便利设施（convenience）方法的类和使用`setSources()`添加的类都会被检查，以查看它们是否有`@PropertySources`，如果有，这些属性会被尽可能早的添加到`Environment`里，以确保`ApplicationContext`生命周期的所有阶段都能使用。以这种方式添加的属性优先于任何使用默认位置添加的属性，但低于系统属性，环境变量或命令行参数。
+為應用程序源添加`@PropertySource`注解是一種很好的添加和修改源順序的方法。傳遞給`SpringApplication`靜態便利設施（convenience）方法的類和使用`setSources()`添加的類都會被檢查，以查看它們是否有`@PropertySources`，如果有，這些屬性會被盡可能早的添加到`Environment`裡，以確保`ApplicationContext`生命周期的所有階段都能使用。以這種方式添加的屬性優先於任何使用默認位置添加的屬性，但低於系統屬性，環境變量或命令行參數。
 
-你也可以提供系统属性（或环境变量）来改变该行为：
+你也可以提供系統屬性（或環境變量）來改變該行為：
 
-1. `spring.config.name`（`SPRING_CONFIG_NAME`）是根文件名，默认为`application`。
-2. `spring.config.location`（`SPRING_CONFIG_LOCATION`）是要加载的文件（例如，一个classpath资源或一个URL）。Spring Boot为该文档设置一个单独的`Environment`属性，它可以被系统属性，环境变量或命令行参数覆盖。
+1. `spring.config.name`（`SPRING_CONFIG_NAME`）是根文件名，默認為`application`。
+2. `spring.config.location`（`SPRING_CONFIG_LOCATION`）是要加載的文件（例如，一個classpath資源或一個URL）。Spring Boot為該文件設置一個單獨的`Environment`屬性，它可以被系統屬性，環境變量或命令行參數覆蓋。
 
-不管你在environment设置什么，Spring Boot都将加载上面讨论过的`application.properties`。如果使用YAML，那具有'.yml'扩展的文件默认也会被添加到该列表。
+不管你在environment設置什麼，Spring Boot都將加載上麵討論過的`application.properties`。如果使用YAML，那具有'.yml'擴展的文件默認也會被添加到該列表。
 
-详情参考[ConfigFileApplicationListener](http://github.com/spring-projects/spring-boot/tree/master/spring-boot/src/main/java/org/springframework/boot/context/config/ConfigFileApplicationListener.java)
+詳情參考[ConfigFileApplicationListener](http://github.com/spring-projects/spring-boot/tree/master/spring-boot/src/main/java/org/springframework/boot/context/config/ConfigFileApplicationListener.java)
 
-* 使用'short'命令行参数
+* 使用'short'命令行參數
 
-有些人喜欢使用（例如）`--port=9000`代替`--server.port=9000`来设置命令行配置属性。你可以通过在application.properties中使用占位符来启用该功能，比如：
+有些人喜歡使用（例如）`--port=9000`代替`--server.port=9000`來設置命令行配置屬性。你可以通過在application.properties中使用佔位符來啟用該功能，比如：
 ```java
 server.port=${port:8080}
 ```
-**注**：如果你继承自`spring-boot-starter-parent` POM，为了防止和Spring-style的占位符产生冲突，`maven-resources-plugins`默认的过滤令牌（filter token）已经从`${*}`变为`@`（即`@maven.token@`代替了`${maven.token}`）。如果已经直接启用maven对application.properties的过滤，你可能也想使用[其他的分隔符](http://maven.apache.org/plugins/maven-resources-plugin/resources-mojo.html#delimiters)替换默认的过滤令牌。
+**注**：如果你繼承自`spring-boot-starter-parent` POM，為了防止和Spring-style的佔位符產生衝突，`maven-resources-plugins`默認的過濾令牌（filter token）已經從`${*}`變為`@`（即`@maven.token@`代替了`${maven.token}`）。如果已經直接啟用maven對application.properties的過濾，你可能也想使用[其他的分隔符](http://maven.apache.org/plugins/maven-resources-plugin/resources-mojo.html#delimiters)替換默認的過濾令牌。
 
-**注**：在这种特殊的情况下，端口绑定能够在一个PaaS环境下工作，比如Heroku和Cloud Foundry，因为在这两个平台中`PORT`环境变量是自动设置的，并且Spring能够绑定`Environment`属性的大写同义词。
+**注**：在這種特殊的情況下，端口綁定能夠在一個PaaS環境下工作，比如Heroku和Cloud Foundry，因為在這兩個平台中`PORT`環境變量是自動設置的，並且Spring能夠綁定`Environment`屬性的大寫同義詞。
 
-* 使用YAML配置外部属性
+* 使用YAML配置外部屬性
 
-YAML是JSON的一个超集，可以非常方便的将外部配置以层次结构形式存储起来。比如：
+YAML是JSON的一個超集，可以非常方便的將外部配置以層次結構形式存儲起來。比如：
 ```json
 spring:
     application:
@@ -90,37 +90,37 @@ spring:
 server:
     port: 9000
 ```
-创建一个application.yml文件，将它放到classpath的根目录下，并添加snakeyaml依赖（Maven坐标为`org.yaml:snakeyaml`，如果你使用`spring-boot-starter`那就已经被包含了）。一个YAML文件会被解析为一个Java `Map<String,Object>`（和一个JSON对象类似），Spring Boot会平伸该map，这样它就只有1级深度，并且有period-separated的keys，跟人们在Java中经常使用的Properties文件非常类似。
-上面的YAML示例对应于下面的application.properties文件：
+創建一個application.yml文件，將它放到classpath的根目錄下，並添加snakeyaml依賴（Maven坐標為`org.yaml:snakeyaml`，如果你使用`spring-boot-starter`那就已經被包含了）。一個YAML文件會被解析為一個Java `Map<String,Object>`（和一個JSON對象類似），Spring Boot會平伸該map，這樣它就隻有1級深度，並且有period-separated的keys，跟人們在Java中經常使用的Properties文件非常類似。
+上麵的YAML範例對應於下面的application.properties文件：
 ```java
 spring.application.name=cruncher
 spring.datasource.driverClassName=com.mysql.jdbc.Driver
 spring.datasource.url=jdbc:mysql://localhost/test
 server.port=9000
 ```
-查看'Spring Boot特性'章节的[Section 23.6, “Using YAML instead of Properties”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-external-config-yaml)可以获取更多关于YAML的信息。
+查看'Spring Boot特性'章節的[Section 23.6, “Using YAML instead of Properties”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-external-config-yaml)可以獲取更多關於YAML的信息。
 
-* 设置生效的Spring profiles
+* 設置生效的Spring profiles
 
-Spring `Environment`有一个API可以设置生效的profiles，但通常你会设置一个系统profile（`spring.profiles.active`）或一个OS环境变量（`SPRING_PROFILES_ACTIVE`）。比如，使用一个`-D`参数启动应用程序（记着把它放到main类或jar文件之前）：
+Spring `Environment`有一個API可以設置生效的profiles，但通常你會設置一個系統profile（`spring.profiles.active`）或一個OS環境變量（`SPRING_PROFILES_ACTIVE`）。比如，使用一個`-D`參數啟動應用程序（記著把它放到main類或jar文件之前）：
 ```shell
 $ java -jar -Dspring.profiles.active=production demo-0.0.1-SNAPSHOT.jar
 ```
-在Spring Boot中，你也可以在application.properties里设置生效的profile，例如：
+在Spring Boot中，你也可以在application.properties裡設置生效的profile，例如：
 ```java
 spring.profiles.active=production
 ```
-通过这种方式设置的值会被系统属性或环境变量替换，但不会被`SpringApplicationBuilder.profiles()`方法替换。因此，后面的Java API可用来在不改变默认设置的情况下增加profiles。
+通過這種方式設置的值會被系統屬性或環境變量替換，但不會被`SpringApplicationBuilder.profiles()`方法替換。因此，後麵的Java API可用來在不改變默認設置的情況下增加profiles。
 
-想要获取更多信息可查看'Spring Boot特性'章节的[Chapter 24, Profiles](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-profiles)。
+想要獲取更多信息可查看'Spring Boot特性'章節的[Chapter 24, Profiles](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-profiles)。
 
-* 根据环境改变配置
+* 根據環境改變配置
 
-一个YAML文件实际上是一系列以`---`线分割的文档，每个文档都被单独解析为一个平坦的（flattened）map。
+一個YAML文件實際上是一係列以`---`線分割的文件，每個文件都被單獨解析為一個平坦的（flattened）map。
 
-如果一个YAML文档包含一个`spring.profiles`关键字，那profiles的值（以逗号分割的profiles列表）将被传入Spring的`Environment.acceptsProfiles()`方法，并且如果这些profiles的任何一个被激活，对应的文档被包含到最终的合并中（否则不会）。
+如果一個YAML文件包含一個`spring.profiles`關鍵字，那profiles的值（以逗號分割的profiles列表）將被傳入Spring的`Environment.acceptsProfiles()`方法，並且如果這些profiles的任何一個被啟動，對應的文件被包含到最終的合並中（否則不會）。
 
-示例：
+範例：
 ```json
 server:
     port: 9000
@@ -138,31 +138,31 @@ spring:
 server:
     port: 0
 ```
-在这个示例中，默认的端口是9000，但如果Spring profile 'development'生效则该端口是9001，如果'production'生效则它是0。
+在這個範例中，默認的端口是9000，但如果Spring profile 'development'生效則該端口是9001，如果'production'生效則它是0。
 
-YAML文档以它们遇到的顺序合并（所以后面的值会覆盖前面的值）。
+YAML文件以它們遇到的順序合並（所以後麵的值會覆蓋前麵的值）。
 
-想要使用profiles文件完成同样的操作，你可以使用`application-${profile}.properties`指定特殊的，profile相关的值。
+想要使用profiles文件完成同樣的操作，你可以使用`application-${profile}.properties`指定特殊的，profile相關的值。
 
-* 发现外部属性的内置选项
+* 發現外部屬性的內置選項
 
-Spring Boot在运行时将来自application.properties（或.yml）的外部属性绑定进一个应用中。在一个地方不可能存在详尽的所有支持属性的列表（技术上也是不可能的），因为你的classpath下的其他jar文件也能够贡献。
+Spring Boot在運行時將來自application.properties（或.yml）的外部屬性綁定進一個應用中。在一個地方不可能存在詳盡的所有支援屬性的列表（技術上也是不可能的），因為你的classpath下的其他jar文件也能夠貢獻。
 
-每个运行中且有Actuator特性的应用都会有一个`configprops`端点，它能够展示所有边界和可通过`@ConfigurationProperties`绑定的属性。
+每個運行中且有Actuator特性的應用都會有一個`configprops`端點，它能夠展示所有邊界和可通過`@ConfigurationProperties`綁定的屬性。
 
-附录中包含一个[application.properties](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#common-application-properties)示例，它列举了Spring Boot支持的大多数常用属性。获取权威列表可搜索`@ConfigurationProperties`和`@Value`的源码，还有不经常使用的`RelaxedEnvironment`。
+附錄中包含一個[application.properties](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#common-application-properties)範例，它列舉了Spring Boot支援的大多數常用屬性。獲取權威列表可搜索`@ConfigurationProperties`和`@Value`的源碼，還有不經常使用的`RelaxedEnvironment`。
 
-### 内嵌的servlet容器
+### 內嵌的servlet容器
 
-* 为应用添加Servlet，Filter或ServletContextListener
+* 為應用添加Servlet，Filter或ServletContextListener
 
-Servlet规范支持的Servlet，Filter，ServletContextListener和其他监听器可以作为`@Bean`定义添加到你的应用中。需要格外小心的是，它们不会引起太多的其他beans的热初始化，因为在应用生命周期的早期它们已经被安装到容器里了（比如，让它们依赖你的DataSource或JPA配置就不是一个好主意）。你可以通过延迟初始化它们到第一次使用而不是初始化时来突破该限制。
+Servlet規範支援的Servlet，Filter，ServletContextListener和其他監聽器可以作為`@Bean`定義添加到你的應用中。需要格外小心的是，它們不會引起太多的其他beans的熱初始化，因為在應用生命周期的早期它們已經被安裝到容器裡了（比如，讓它們依賴你的DataSource或JPA配置就不是一個好主意）。你可以通過延遲初始化它們到第一次使用而不是初始化時來突破該限製。
 
-在Filters和Servlets的情况下，你也可以通过添加一个`FilterRegistrationBean`或`ServletRegistrationBean`代替或以及底层的组件来添加映射（mappings）和初始化参数。
+在Filters和Servlets的情況下，你也可以通過添加一個`FilterRegistrationBean`或`ServletRegistrationBean`代替或以及底層的組件來添加映射（mappings）和初始化參數。
 
-* 禁止注册Servlet或Filter
+* 禁止注冊Servlet或Filter
 
-正如[以上讨论](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-add-a-servlet-filter-or-servletcontextlistener)的任何Servlet或Filter beans将被自动注册到servlet容器中。为了禁止注册一个特殊的Filter或Servlet bean，可以为它创建一个注册bean，然后禁用该bean。例如：
+正如[以上討論](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-add-a-servlet-filter-or-servletcontextlistener)的任何Servlet或Filter beans將被自動注冊到servlet容器中。為了禁止注冊一個特殊的Filter或Servlet bean，可以為它創建一個注冊bean，然後禁用該bean。例如：
 ```java
 @Bean
 public FilterRegistrationBean registration(MyFilter filter) {
@@ -172,23 +172,23 @@ public FilterRegistrationBean registration(MyFilter filter) {
 }
 ```
 
-* 改变HTTP端口
+* 改變HTTP端口
 
-在一个单独的应用中，主HTTP端口默认为8080，但可以使用`server.port`设置（比如，在application.properties中或作为一个系统属性）。由于`Environment`值的宽松绑定，你也可以使用`SERVER_PORT`（比如，作为一个OS环境变）。
+在一個單獨的應用中，主HTTP端口默認為8080，但可以使用`server.port`設置（比如，在application.properties中或作為一個系統屬性）。由於`Environment`值的寬鬆綁定，你也可以使用`SERVER_PORT`（比如，作為一個OS環境變）。
 
-为了完全关闭HTTP端点，但仍创建一个WebApplicationContext，你可以设置`server.port=-1`（测试时可能有用）。
+為了完全關閉HTTP端點，但仍創建一個WebApplicationContext，你可以設置`server.port=-1`（測試時可能有用）。
 
-想获取更多详情可查看'Spring Boot特性'章节的[Section 26.3.3, “Customizing embedded servlet containers”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-customizing-embedded-containers)，或[ServerProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/ServerProperties.java)源码。
+想獲取更多詳情可查看'Spring Boot特性'章節的[Section 26.3.3, “Customizing embedded servlet containers”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-customizing-embedded-containers)，或[ServerProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/ServerProperties.java)源碼。
 
-* 使用随机未分配的HTTP端口
+* 使用隨機未分配的HTTP端口
 
-想扫描一个未使用的端口（为了防止冲突使用OS本地端口）可以使用`server.port=0`。
+想掃描一個未使用的端口（為了防止衝突使用OS本地端口）可以使用`server.port=0`。
 
-* 发现运行时的HTTP端口
+* 發現運行時的HTTP端口
 
-你可以通过日志输出或它的EmbeddedServletContainer的EmbeddedWebApplicationContext获取服务器正在运行的端口。获取和确认服务器已经初始化的最好方式是添加一个`ApplicationListener<EmbeddedServletContainerInitializedEvent>`类型的`@Bean`，然后当事件发布时将容器pull出来。
+你可以通過日誌輸出或它的EmbeddedServletContainer的EmbeddedWebApplicationContext獲取服務器正在運行的端口。獲取和確認服務器已經初始化的最好方式是添加一個`ApplicationListener<EmbeddedServletContainerInitializedEvent>`類型的`@Bean`，然後當事件發布時將容器pull出來。
 
-使用`@WebIntegrationTests`的一个有用实践是设置`server.port=0`，然后使用`@Value`注入实际的（'local'）端口。例如：
+使用`@WebIntegrationTests`的一個有用實踐是設置`server.port=0`，然後使用`@Value`注入實際的（'local'）端口。例如：
 ```java
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SampleDataJpaApplication.class)
@@ -207,28 +207,28 @@ public class CityRepositoryIntegrationTests {
 ```
 * 配置SSL
 
-SSL能够以声明方式进行配置，一般通过在application.properties或application.yml设置各种各样的`server.ssl.*`属性。例如：
+SSL能夠以聲明方式進行配置，一般通過在application.properties或application.yml設置各種各樣的`server.ssl.*`屬性。例如：
 ```json
 server.port = 8443
 server.ssl.key-store = classpath:keystore.jks
 server.ssl.key-store-password = secret
 server.ssl.key-password = another-secret
 ```
-获取所有支持的配置详情可查看[Ssl](http://github.com/spring-projects/spring-boot/tree/master/spring-boot/src/main/java/org/springframework/boot/context/embedded/Ssl.java)。
+獲取所有支援的配置詳情可查看[Ssl](http://github.com/spring-projects/spring-boot/tree/master/spring-boot/src/main/java/org/springframework/boot/context/embedded/Ssl.java)。
 
-**注**：Tomcat要求key存储（如果你正在使用一个可信存储）能够直接在文件系统上访问，即它不能从一个jar文件内读取。Jetty和Undertow没有该限制。
+**注**：Tomcat要求key存儲（如果你正在使用一個可信存儲）能夠直接在文件系統上訪問，即它不能從一個jar文件內讀取。Jetty和Undertow沒有該限製。
 
-使用类似于以上示例的配置意味着该应用将不在支持端口为8080的普通HTTP连接。Spring Boot不支持通过application.properties同时配置HTTP连接器和HTTPS连接器。如果你两个都想要，那就需要以编程的方式配置它们中的一个。推荐使用application.properties配置HTTPS，因为HTTP连接器是两个中最容易以编程方式进行配置的。获取示例可查看[spring-boot-sample-tomcat-multi-connectors](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-tomcat-multi-connectors)示例项目。
+使用類似於以上範例的配置意味著該應用將不在支援端口為8080的普通HTTP連接。Spring Boot不支援通過application.properties同時配置HTTP連接器和HTTPS連接器。如果你兩個都想要，那就需要以程式的方式配置它們中的一個。推薦使用application.properties配置HTTPS，因為HTTP連接器是兩個中最容易以程式方式進行配置的。獲取範例可查看[spring-boot-sample-tomcat-multi-connectors](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-tomcat-multi-connectors)範例項目。
 
 * 配置Tomcat
 
-通常你可以遵循[Section 63.7, “Discover built-in options for external properties”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-discover-build-in-options-for-external-properties)关于`@ConfigurationProperties`（这里主要的是`ServerProperties`）的建议，但也看下`EmbeddedServletContainerCustomizer`和各种你可以添加的Tomcat-specific的`*Customizers`。
+通常你可以遵循[Section 63.7, “Discover built-in options for external properties”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-discover-build-in-options-for-external-properties)關於`@ConfigurationProperties`（這裡主要的是`ServerProperties`）的建議，但也看下`EmbeddedServletContainerCustomizer`和各種你可以添加的Tomcat-specific的`*Customizers`。
 
-Tomcat APIs相当丰富，一旦获取到`TomcatEmbeddedServletContainerFactory`，你就能够以多种方式修改它。或核心选择是添加你自己的`TomcatEmbeddedServletContainerFactory`。
+Tomcat APIs相當豐富，一旦獲取到`TomcatEmbeddedServletContainerFactory`，你就能夠以多種方式修改它。或核心選擇是添加你自己的`TomcatEmbeddedServletContainerFactory`。
 
-* 启用Tomcat的多连接器（Multiple Connectors）
+* 啟用Tomcat的多連接器（Multiple Connectors）
 
-你可以将一个`org.apache.catalina.connector.Connector`添加到`TomcatEmbeddedServletContainerFactory`，这就能够允许多连接器，比如HTTP和HTTPS连接器：
+你可以將一個`org.apache.catalina.connector.Connector`添加到`TomcatEmbeddedServletContainerFactory`，這就能夠允許多連接器，比如HTTP和HTTPS連接器：
 ```java
 @Bean
 public EmbeddedServletContainerFactory servletContainer() {
@@ -260,31 +260,31 @@ private Connector createSslConnector() {
     }
 }
 ```
-* 在前端代理服务器后使用Tomcat
+* 在前端代理服務器後使用Tomcat
 
-Spring Boot将自动配置Tomcat的`RemoteIpValve`，如果你启用它的话。这允许你透明地使用标准的`x-forwarded-for`和`x-forwarded-proto`头，很多前端代理服务器都会添加这些头信息（headers）。通过将这些属性中的一个或全部设置为非空的内容来开启该功能（它们是大多数代理约定的值，如果你只设置其中的一个，则另一个也会被自动设置）。
+Spring Boot將自動配置Tomcat的`RemoteIpValve`，如果你啟用它的話。這允許你透明地使用標準的`x-forwarded-for`和`x-forwarded-proto`頭，很多前端代理服務器都會添加這些頭信息（headers）。通過將這些屬性中的一個或全部設置為非空的內容來開啟該功能（它們是大多數代理約定的值，如果你隻設置其中的一個，則另一個也會被自動設置）。
 ```java
 server.tomcat.remote_ip_header=x-forwarded-for
 server.tomcat.protocol_header=x-forwarded-proto
 ```
-如果你的代理使用不同的头部（headers），你可以通过向application.properties添加一些条目来自定义该值的配置，比如：
+如果你的代理使用不同的頭部（headers），你可以通過向application.properties添加一些條目來自定義該值的配置，比如：
 ```java
 server.tomcat.remote_ip_header=x-your-remote-ip-header
 server.tomcat.protocol_header=x-your-protocol-header
 ```
-该值也可以配置为一个默认的，能够匹配信任的内部代理的正则表达式。默认情况下，受信任的IP包括 10/8, 192.168/16, 169.254/16 和 127/8。可以通过向application.properties添加一个条目来自定义该值的配置，比如：
+該值也可以配置為一個默認的，能夠匹配信任的內部代理的正則表達式。默認情況下，受信任的IP包括 10/8, 192.168/16, 169.254/16 和 127/8。可以通過向application.properties添加一個條目來自定義該值的配置，比如：
 ```java
 server.tomcat.internal_proxies=192\\.168\\.\\d{1,3}\\.\\d{1,3}
 ```
-**注**：只有在你使用一个properties文件作为配置的时候才需要双反斜杠。如果你使用YAML，单个反斜杠就足够了，`192\.168\.\d{1,3}\.\d{1,3}`和上面的等价。
+**注**：隻有在你使用一個properties文件作為配置的時候才需要雙反斜杠。如果你使用YAML，單個反斜杠就足夠了，`192\.168\.\d{1,3}\.\d{1,3}`和上麵的等價。
 
-另外，通过在一个`TomcatEmbeddedServletContainerFactory` bean中配置和添加`RemoteIpValve`，你就可以完全控制它的设置了。
+另外，通過在一個`TomcatEmbeddedServletContainerFactory` bean中配置和添加`RemoteIpValve`，你就可以完全控製它的設置了。
 
 * 使用Jetty替代Tomcat
 
-Spring Boot starters（特别是spring-boot-starter-web）默认都是使用Tomcat作为内嵌容器的。你需要排除那些Tomcat的依赖并包含Jetty的依赖。为了让这种处理尽可能简单，Spring Boot将Tomcat和Jetty的依赖捆绑在一起，然后提供单独的starters。
+Spring Boot starters（特別是spring-boot-starter-web）默認都是使用Tomcat作為內嵌容器的。你需要排除那些Tomcat的依賴並包含Jetty的依賴。為了讓這種處理盡可能簡單，Spring Boot將Tomcat和Jetty的依賴捆綁在一起，然後提供單獨的starters。
 
-Maven示例：
+Maven範例：
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -301,7 +301,7 @@ Maven示例：
     <artifactId>spring-boot-starter-jetty</artifactId>
 </dependency>
 ```
-Gradle示例：
+Gradle範例：
 ```gradle
 configurations {
     compile.exclude module: "spring-boot-starter-tomcat"
@@ -315,13 +315,13 @@ dependencies {
 ```
 * 配置Jetty
 
-通常你可以遵循[Section 63.7, “Discover built-in options for external properties”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-discover-build-in-options-for-external-properties)关于`@ConfigurationProperties`（此处主要是ServerProperties）的建议，但也要看下`EmbeddedServletContainerCustomizer`。Jetty API相当丰富，一旦获取到`JettyEmbeddedServletContainerFactory`，你就可以使用很多方式修改它。或更彻底地就是添加你自己的`JettyEmbeddedServletContainerFactory`。
+通常你可以遵循[Section 63.7, “Discover built-in options for external properties”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-discover-build-in-options-for-external-properties)關於`@ConfigurationProperties`（此處主要是ServerProperties）的建議，但也要看下`EmbeddedServletContainerCustomizer`。Jetty API相當豐富，一旦獲取到`JettyEmbeddedServletContainerFactory`，你就可以使用很多方式修改它。或更徹底地就是添加你自己的`JettyEmbeddedServletContainerFactory`。
 
 * 使用Undertow替代Tomcat
 
-使用Undertow替代Tomcat和[使用Jetty替代Tomcat](https://github.com/qibaoguang/Spring-Boot-Reference-Guide/edit/master/How-to_%20guides.md)非常类似。你需要排除Tomat依赖，并包含Undertow starter。
+使用Undertow替代Tomcat和[使用Jetty替代Tomcat](https://github.com/qibaoguang/Spring-Boot-Reference-Guide/edit/master/How-to_%20guides.md)非常類似。你需要排除Tomat依賴，並包含Undertow starter。
 
-Maven示例：
+Maven範例：
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -338,7 +338,7 @@ Maven示例：
     <artifactId>spring-boot-starter-undertow</artifactId>
 </dependency>
 ```
-Gradle示例：
+Gradle範例：
 ```gradle
 configurations {
     compile.exclude module: "spring-boot-starter-tomcat"
@@ -353,11 +353,11 @@ dependencies {
 ```
 * 配置Undertow
 
-通常你可以遵循[Section 63.7, “Discover built-in options for external properties”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-discover-build-in-options-for-external-properties)关于`@ConfigurationProperties`（此处主要是ServerProperties和ServerProperties.Undertow），但也要看下`EmbeddedServletContainerCustomizer`。一旦获取到`UndertowEmbeddedServletContainerFactory`，你就可以使用一个`UndertowBuilderCustomizer`修改Undertow的配置以满足你的需求。或更彻底地就是添加你自己的`UndertowEmbeddedServletContainerFactory`。
+通常你可以遵循[Section 63.7, “Discover built-in options for external properties”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-discover-build-in-options-for-external-properties)關於`@ConfigurationProperties`（此處主要是ServerProperties和ServerProperties.Undertow），但也要看下`EmbeddedServletContainerCustomizer`。一旦獲取到`UndertowEmbeddedServletContainerFactory`，你就可以使用一個`UndertowBuilderCustomizer`修改Undertow的配置以滿足你的需求。或更徹底地就是添加你自己的`UndertowEmbeddedServletContainerFactory`。
 
-* 启用Undertow的多监听器（Multiple Listeners）
+* 啟用Undertow的多監聽器（Multiple Listeners）
 
-往`UndertowEmbeddedServletContainerFactory`添加一个`UndertowBuilderCustomizer`，然后添加一个监听者到`Builder`：
+往`UndertowEmbeddedServletContainerFactory`添加一個`UndertowBuilderCustomizer`，然後添加一個監聽者到`Builder`：
 ```java
 @Bean
 public UndertowEmbeddedServletContainerFactory embeddedServletContainerFactory() {
@@ -375,11 +375,11 @@ public UndertowEmbeddedServletContainerFactory embeddedServletContainerFactory()
 ```
 * 使用Tomcat7
 
-Tomcat7可用于Spring Boot，但默认使用的是Tomcat8。如果不能使用Tomcat8（例如，你使用的是Java1.6），你需要改变classpath去引用Tomcat7。
+Tomcat7可用於Spring Boot，但默認使用的是Tomcat8。如果不能使用Tomcat8（例如，你使用的是Java1.6），你需要改變classpath去引用Tomcat7。
 
-- 通过Maven使用Tomcat7
+- 通過Maven使用Tomcat7
 
-如果正在使用starter pom和parent，你只需要改变Tomcat的version属性，比如，对于一个简单的webapp或service：
+如果正在使用starter pom和parent，你隻需要改變Tomcat的version屬性，比如，對於一個簡單的webapp或service：
 ```xml
 <properties>
     <tomcat.version>7.0.59</tomcat.version>
@@ -393,9 +393,9 @@ Tomcat7可用于Spring Boot，但默认使用的是Tomcat8。如果不能使用T
     ...
 </dependencies>
 ```
-- 通过Gradle使用Tomcat7
+- 通過Gradle使用Tomcat7
 
-你可以通过设置`tomcat.version`属性改变Tomcat的版本：
+你可以通過設置`tomcat.version`屬性改變Tomcat的版本：
 ```gradle
 ext['tomcat.version'] = '7.0.59'
 dependencies {
@@ -404,11 +404,11 @@ dependencies {
 ```
 * 使用Jetty8
 
-Jetty8可用于Spring Boot，但默认使用的是Jetty9。如果不能使用Jetty9（例如，因为你使用的是Java1.6），你只需改变classpath去引用Jetty8。你也需要排除Jetty的WebSocket相关的依赖。
+Jetty8可用於Spring Boot，但默認使用的是Jetty9。如果不能使用Jetty9（例如，因為你使用的是Java1.6），你隻需改變classpath去引用Jetty8。你也需要排除Jetty的WebSocket相關的依賴。
 
-- 通过Maven使用Jetty8
+- 通過Maven使用Jetty8
 
-如果正在使用starter pom和parent，你只需添加Jetty starter，去掉WebSocket依赖，并改变version属性，比如，对于一个简单的webapp或service：
+如果正在使用starter pom和parent，你隻需添加Jetty starter，去掉WebSocket依賴，並改變version屬性，比如，對於一個簡單的webapp或service：
 ```xml
 <properties>
     <jetty.version>8.1.15.v20140411</jetty.version>
@@ -437,9 +437,9 @@ Jetty8可用于Spring Boot，但默认使用的是Jetty9。如果不能使用Jet
     </dependency>
 </dependencies>
 ```
-- 通过Gradle使用Jetty8
+- 通過Gradle使用Jetty8
 
-你可以设置`jetty.version`属性并排除相关的WebSocket依赖，比如对于一个简单的webapp或service：
+你可以設置`jetty.version`屬性並排除相關的WebSocket依賴，比如對於一個簡單的webapp或service：
 ```gradle
 ext['jetty.version'] = '8.1.15.v20140411'
 dependencies {
@@ -451,46 +451,46 @@ dependencies {
     }
 }
 ```
-* 使用@ServerEndpoint创建WebSocket端点
+* 使用@ServerEndpoint創建WebSocket端點
 
-如果想在一个使用内嵌容器的Spring Boot应用中使用@ServerEndpoint，你需要声明一个单独的ServerEndpointExporter @Bean：
+如果想在一個使用內嵌容器的Spring Boot應用中使用@ServerEndpoint，你需要聲明一個單獨的ServerEndpointExporter @Bean：
 ```java
 @Bean
 public ServerEndpointExporter serverEndpointExporter() {
     return new ServerEndpointExporter();
 }
 ```
-该bean将用底层的WebSocket容器注册任何的被`@ServerEndpoint`注解的beans。当部署到一个单独的servlet容器时，该角色将被一个servlet容器初始化方法履行，ServerEndpointExporter bean也就不是必需的了。
+該bean將用底層的WebSocket容器注冊任何的被`@ServerEndpoint`注解的beans。當部署到一個單獨的servlet容器時，該角色將被一個servlet容器初始化方法履行，ServerEndpointExporter bean也就不是必需的了。
 
-* 启用HTTP响应压缩
+* 啟用HTTP響應壓縮
 
-Spring Boot提供两种启用HTTP压缩的机制;一种是Tomcat特有的，另一种是使用一个filter，可以配合Jetty，Tomcat和Undertow。
+Spring Boot提供兩種啟用HTTP壓縮的機製;一種是Tomcat特有的，另一種是使用一個filter，可以配合Jetty，Tomcat和Undertow。
 
-- 启用Tomcat的HTTP响应压缩
+- 啟用Tomcat的HTTP響應壓縮
 
-Tomcat对HTTP响应压缩提供内建支持。默认是禁用的，但可以通过application.properties轻松的启用：
+Tomcat對HTTP響應壓縮提供內建支援。默認是禁用的，但可以通過application.properties輕鬆的啟用：
 ```java
 server.tomcat.compression: on
 ```
-当设置为`on`时，Tomcat将压缩响应的长度至少为2048字节。你可以配置一个整型值来设置该限制而不只是`on`，比如：
+當設置為`on`時，Tomcat將壓縮響應的長度至少為2048字節。你可以配置一個整型值來設置該限製而不只是`on`，比如：
 ```java
 server.tomcat.compression: 4096
 ```
-默认情况下，Tomcat只压缩某些MIME类型的响应（text/html，text/xml和text/plain）。你可以使用`server.tomcat.compressableMimeTypes`属性进行自定义，比如：
+默認情況下，Tomcat隻壓縮某些MIME類型的響應（text/html，text/xml和text/plain）。你可以使用`server.tomcat.compressableMimeTypes`屬性進行自定義，比如：
 ```java
 server.tomcat.compressableMimeTypes=application/json,application/xml
 ```
-- 使用GzipFilter开启HTTP响应压缩
+- 使用GzipFilter開啟HTTP響應壓縮
 
-如果你正在使用Jetty或Undertow，或想要更精确的控制HTTP响应压缩，Spring Boot为Jetty的GzipFilter提供自动配置。虽然该过滤器是Jetty的一部分，但它也兼容Tomcat和Undertow。想要启用该过滤器，只需简单的为你的应用添加`org.eclipse.jetty:jetty-servlets`依赖。
+如果你正在使用Jetty或Undertow，或想要更精確的控製HTTP響應壓縮，Spring Boot為Jetty的GzipFilter提供自動配置。雖然該過濾器是Jetty的一部分，但它也兼容Tomcat和Undertow。想要啟用該過濾器，隻需簡單的為你的應用添加`org.eclipse.jetty:jetty-servlets`依賴。
 
-GzipFilter可以使用`spring.http.gzip.*`属性进行配置。具体参考[GzipFilterProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/GzipFilterProperties.java)。
+GzipFilter可以使用`spring.http.gzip.*`屬性進行配置。具體參考[GzipFilterProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/GzipFilterProperties.java)。
 
 ### Spring MVC
 
-* 编写一个JSON REST服务
+* 編寫一個JSON REST服務
 
-在Spring Boot应用中，任何Spring `@RestController`默认应该渲染为JSON响应，只要classpath下存在Jackson2。例如：
+在Spring Boot應用中，任何Spring `@RestController`默認應該渲染為JSON響應，隻要classpath下存在Jackson2。例如：
 ```java
 @RestController
 public class MyController {
@@ -502,26 +502,26 @@ public class MyController {
 
 }
 ```
-只要MyThing能够通过Jackson2序列化（比如，一个标准的POJO或Groovy对象），[localhost:8080/thing](http://localhost:8080/thing)默认响应一个JSON表示。有时在一个浏览器中你可能看到XML响应因为浏览器倾向于发送XML
-响应头。
+隻要MyThing能夠通過Jackson2序列化（比如，一個標準的POJO或Groovy對象），[localhost:8080/thing](http://localhost:8080/thing)默認響應一個JSON表示。有時在一個瀏覽器中你可能看到XML響應因為瀏覽器傾向於發送XML
+響應頭。
 
-* 编写一个XML REST服务
+* 編寫一個XML REST服務
 
-如果classpath下存在Jackson XML扩展（jackson-dataformat-xml），它会被用来渲染XML响应，示例和JSON的非常相似。想要使用它，只需为你的项目添加以下的依赖：
+如果classpath下存在Jackson XML擴展（jackson-dataformat-xml），它會被用來渲染XML響應，範例和JSON的非常相似。想要使用它，隻需為你的項目添加以下的依賴：
 ```xml
 <dependency>
     <groupId>com.fasterxml.jackson.dataformat</groupId>
     <artifactId>jackson-dataformat-xml</artifactId>
 </dependency>
 ```
-你可能也想添加对Woodstox的依赖。它比JDK提供的默认Stax实现快很多，并且支持良好的格式化输出，提高了namespace处理能力：
+你可能也想添加對Woodstox的依賴。它比JDK提供的默認Stax實現快很多，並且支援良好的格式化輸出，提高了namespace處理能力：
 ```xml
 <dependency>
     <groupId>org.codehaus.woodstox</groupId>
     <artifactId>woodstox-core-asl</artifactId>
 </dependency>
 ```
-如果Jackson的XML扩展不可用，Spring Boot将使用JAXB（JDK默认提供），不过你需要为MyThing添加额外的注解`@XmlRootElement`：
+如果Jackson的XML擴展不可用，Spring Boot將使用JAXB（JDK默認提供），不過你需要為MyThing添加額外的注解`@XmlRootElement`：
 ```java
 @XmlRootElement
 public class MyThing {
@@ -529,22 +529,22 @@ public class MyThing {
     // .. getters and setters
 }
 ```
-想要服务器渲染XML而不是JSON，你可能需要发送一个`Accept: text/xml`头部（或使用浏览器）。
+想要服務器渲染XML而不是JSON，你可能需要發送一個`Accept: text/xml`頭部（或使用瀏覽器）。
 
-* 自定义Jackson ObjectMapper
+* 自定義Jackson ObjectMapper
 
-在一个HTTP交互中，Spring MVC（客户端和服务端）使用HttpMessageConverters协商内容转换。如果classpath下存在Jackson，你就已经获取到Jackson2ObjectMapperBuilder提供的默认转换器。
+在一個HTTP交互中，Spring MVC（客戶端和服務端）使用HttpMessageConverters協商內容轉換。如果classpath下存在Jackson，你就已經獲取到Jackson2ObjectMapperBuilder提供的默認轉換器。
 
-创建的ObjectMapper（或用于Jackson XML转换的XmlMapper）实例默认有以下自定义属性：
+創建的ObjectMapper（或用於Jackson XML轉換的XmlMapper）實例默認有以下自定義屬性：
 
 - `MapperFeature.DEFAULT_VIEW_INCLUSION`禁用
 - `DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES`禁用
 
-Spring Boot也有一些简化自定义该行为的特性。
+Spring Boot也有一些簡化自定義該行為的特性。
 
-你可以使用当前的environment配置ObjectMapper和XmlMapper实例。Jackson提供一个扩展套件，可以用来简单的关闭或开启一些特性，你可以用它们配置Jackson处理的不同方面。这些特性在Jackson中使用5个枚举进行描述的，并被映射到environment的属性上：
+你可以使用當前的environment配置ObjectMapper和XmlMapper實例。Jackson提供一個擴展套件，可以用來簡單的關閉或開啟一些特性，你可以用它們配置Jackson處理的不同方麵。這些特性在Jackson中使用5個枚舉進行描述的，並被映射到environment的屬性上：
 
-|Jackson枚举|Environment属性|
+|Jackson枚舉|Environment屬性|
 |------|:-------|
 |`com.fasterxml.jackson.databind.DeserializationFeature`|`spring.jackson.deserialization.<feature_name>=true|false`|
 |`com.fasterxml.jackson.core.JsonGenerator.Feature`|`spring.jackson.generator.<feature_name>=true|false`|
@@ -552,79 +552,79 @@ Spring Boot也有一些简化自定义该行为的特性。
 |`com.fasterxml.jackson.core.JsonParser.Feature`|`spring.jackson.parser.<feature_name>=true|false`|
 |`com.fasterxml.jackson.databind.SerializationFeature`|`spring.jackson.serialization.<feature_name>=true|false`|
 
-例如，设置`spring.jackson.serialization.indent_output=true`可以开启漂亮打印。注意，由于[松绑定](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-external-config-relaxed-binding)的使用，`indent_output`不必匹配对应的枚举常量`INDENT_OUTPUT`。
+例如，設置`spring.jackson.serialization.indent_output=true`可以開啟漂亮列印。注意，由於[鬆綁定](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-external-config-relaxed-binding)的使用，`indent_output`不必匹配對應的枚舉常量`INDENT_OUTPUT`。
 
-如果想彻底替换默认的ObjectMapper，你需要定义一个该类型的`@Bean`并将它标记为`@Primary`。
+如果想徹底替換默認的ObjectMapper，你需要定義一個該類型的`@Bean`並將它標記為`@Primary`。
 
-定义一个Jackson2ObjectMapperBuilder类型的`@Bean`将允许你自定义默认的ObjectMapper和XmlMapper（分别用于MappingJackson2HttpMessageConverter和MappingJackson2XmlHttpMessageConverter）。
+定義一個Jackson2ObjectMapperBuilder類型的`@Bean`將允許你自定義默認的ObjectMapper和XmlMapper（分別用於MappingJackson2HttpMessageConverter和MappingJackson2XmlHttpMessageConverter）。
 
-另一种自定义Jackson的方法是向你的上下文添加`com.fasterxml.jackson.databind.Module`类型的beans。它们会被注册入每个ObjectMapper类型的bean，当为你的应用添加新特性时，这就提供了一种全局机制来贡献自定义模块。
+另一種自定義Jackson的方法是向你的上下文添加`com.fasterxml.jackson.databind.Module`類型的beans。它們會被注冊入每個ObjectMapper類型的bean，當為你的應用添加新特性時，這就提供了一種全局機製來貢獻自定義模塊。
 
-最后，如果你提供任何MappingJackson2HttpMessageConverter类型的`@Beans`，那它们将替换MVC配置中的默认值。同时，也提供一个HttpMessageConverters类型的bean，它有一些有用的方法可以获取默认的和用户增强的message转换器。
+最後，如果你提供任何MappingJackson2HttpMessageConverter類型的`@Beans`，那它們將替換MVC配置中的默認值。同時，也提供一個HttpMessageConverters類型的bean，它有一些有用的方法可以獲取默認的和用戶增強的message轉換器。
 
-想要获取更多细节可查看[Section 65.4, “Customize the @ResponseBody rendering”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-customize-the-responsebody-rendering)和[WebMvcAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/WebMvcAutoConfiguration.java)源码。
+想要獲取更多細節可查看[Section 65.4, “Customize the @ResponseBody rendering”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-customize-the-responsebody-rendering)和[WebMvcAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/WebMvcAutoConfiguration.java)源碼。
 
-* 自定义@ResponseBody渲染
+* 自定義@ResponseBody渲染
 
-Spring使用HttpMessageConverters渲染`@ResponseBody`（或来自`@RestController`的响应）。你可以通过在Spring Boot上下文中添加该类型的beans来贡献其他的转换器。如果你添加的bean类型默认已经包含了（像用于JSON转换的MappingJackson2HttpMessageConverter），那它将替换默认的。Spring Boot提供一个方便的HttpMessageConverters类型的bean，它有一些有用的方法可以访问默认的和用户增强的message转换器（有用，比如你想要手动将它们注入到一个自定义的`RestTemplate`）。
+Spring使用HttpMessageConverters渲染`@ResponseBody`（或來自`@RestController`的響應）。你可以通過在Spring Boot上下文中添加該類型的beans來貢獻其他的轉換器。如果你添加的bean類型默認已經包含了（像用於JSON轉換的MappingJackson2HttpMessageConverter），那它將替換默認的。Spring Boot提供一個方便的HttpMessageConverters類型的bean，它有一些有用的方法可以訪問默認的和用戶增強的message轉換器（有用，比如你想要手動將它們注入到一個自定義的`RestTemplate`）。
 
-在通常的MVC用例中，任何你提供的WebMvcConfigurerAdapter beans通过覆盖configureMessageConverters方法也能贡献转换器，但不同于通常的MVC，你可以只提供你需要的转换器（因为Spring Boot使用相同的机制来贡献它默认的转换器）。最终，如果你通过提供自己的` @EnableWebMvc`注解覆盖Spring Boot默认的MVC配置，那你就可以完全控制，并使用来自WebMvcConfigurationSupport的getMessageConverters手动做任何事。
+在通常的MVC用例中，任何你提供的WebMvcConfigurerAdapter beans通過覆蓋configureMessageConverters方法也能貢獻轉換器，但不同於通常的MVC，你可以隻提供你需要的轉換器（因為Spring Boot使用相同的機製來貢獻它默認的轉換器）。最終，如果你通過提供自己的` @EnableWebMvc`注解覆蓋Spring Boot默認的MVC配置，那你就可以完全控製，並使用來自WebMvcConfigurationSupport的getMessageConverters手動做任何事。
 
-具体参考[WebMvcAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/WebMvcAutoConfiguration.java)源码。
+具體參考[WebMvcAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/WebMvcAutoConfiguration.java)源碼。
 
-* 处理Multipart文件上传
+* 處理Multipart文件上傳
 
-Spring Boot采用Servlet 3 `javax.servlet.http.Part` API来支持文件上传。默认情况下，Spring Boot配置Spring MVC在单个请求中每个文件最大1Mb，最多10Mb的文件数据。你可以覆盖那些值，也可以设置临时文件存储的位置（比如，存储到`/tmp`文件夹下）及传递数据刷新到磁盘的阀值（通过使用MultipartProperties类暴露的属性）。如果你需要设置文件不受限制，例如，可以设置`multipart.maxFileSize`属性值为`-1`。
+Spring Boot采用Servlet 3 `javax.servlet.http.Part` API來支援文件上傳。默認情況下，Spring Boot配置Spring MVC在單個請求中每個文件最大1Mb，最多10Mb的文件數據。你可以覆蓋那些值，也可以設置臨時文件存儲的位置（比如，存儲到`/tmp`文件夾下）及傳遞數據刷新到磁盤的閥值（通過使用MultipartProperties類暴露的屬性）。如果你需要設置文件不受限製，例如，可以設置`multipart.maxFileSize`屬性值為`-1`。
 
-当你想要接收部分（multipart）编码文件数据作为Spring MVC控制器（controller）处理方法中被`@RequestParam`注解的MultipartFile类型的参数时，multipart支持就非常有用了。
+當你想要接收部分（multipart）編碼文件數據作為Spring MVC控製器（controller）處理方法中被`@RequestParam`注解的MultipartFile類型的參數時，multipart支援就非常有用了。
 
-具体参考[MultipartAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/MultipartAutoConfiguration.java)源码。
+具體參考[MultipartAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/MultipartAutoConfiguration.java)源碼。
 
-* 关闭Spring MVC DispatcherServlet
+* 關閉Spring MVC DispatcherServlet
 
-Spring Boot想要服务来自应用程序root `/`下的所有内容。如果你想将自己的servlet映射到该目录下也是可以的，但当然你可能失去一些Boot MVC特性。为了添加你自己的servlet，并将它映射到root资源，你只需声明一个Servlet类型的`@Bean`，并给它特定的bean名称`dispatcherServlet`（如果只想关闭但不替换它，你可以使用该名称创建不同类型的bean）。
+Spring Boot想要服務來自應用程序root `/`下的所有內容。如果你想將自己的servlet映射到該目錄下也是可以的，但當然你可能失去一些Boot MVC特性。為了添加你自己的servlet，並將它映射到root資源，你隻需聲明一個Servlet類型的`@Bean`，並給它特定的bean名稱`dispatcherServlet`（如果隻想關閉但不替換它，你可以使用該名稱創建不同類型的bean）。
 
-* 关闭默认的MVC配置
+* 關閉默認的MVC配置
 
-完全控制MVC配置的最简单方式是提供你自己的被`@EnableWebMvc`注解的`@Configuration`。这样所有的MVC配置都逃不出你的掌心。
+完全控製MVC配置的最簡單方式是提供你自己的被`@EnableWebMvc`注解的`@Configuration`。這樣所有的MVC配置都逃不出你的掌心。
 
-* 自定义ViewResolvers
+* 自定義ViewResolvers
 
-ViewResolver是Spring MVC的核心组件，它负责转换`@Controller`中的视图名称到实际的View实现。注意ViewResolvers主要用在UI应用中，而不是REST风格的服务（View不是用来渲染`@ResponseBody`的）。Spring有很多你可以选择的ViewResolver实现，并且Spring自己对如何选择相应实现也没发表意见。另一方面，Spring Boot会根据classpath上的依赖和应用上下文为你安装一或两个ViewResolver实现。DispatcherServlet使用所有在应用上下文中找到的解析器（resolvers），并依次尝试每一个直到它获取到结果，所以如果你正在添加自己的解析器，那就要小心顺序和你的解析器添加的位置。
+ViewResolver是Spring MVC的核心組件，它負責轉換`@Controller`中的視圖名稱到實際的View實現。注意ViewResolvers主要用在UI應用中，而不是REST風格的服務（View不是用來渲染`@ResponseBody`的）。Spring有很多你可以選擇的ViewResolver實現，並且Spring自己對如何選擇相應實現也沒發表意見。另一方麵，Spring Boot會根據classpath上的依賴和應用上下文為你安裝一或兩個ViewResolver實現。DispatcherServlet使用所有在應用上下文中找到的解析器（resolvers），並依次嘗試每一個直到它獲取到結果，所以如果你正在添加自己的解析器，那就要小心順序和你的解析器添加的位置。
 
-WebMvcAutoConfiguration将会为你的上下文添加以下ViewResolvers：
+WebMvcAutoConfiguration將會為你的上下文添加以下ViewResolvers：
 
-- bean id为`defaultViewResolver`的InternalResourceViewResolver。这个会定位可以使用DefaultServlet渲染的物理资源（比如，静态资源和JSP页面）。它在视图（view name）上应用了一个前缀和后缀（默认都为空，但你可以通过`spring.view.prefix`和`spring.view.suffix`外部配置设置），然后查找在servlet上下文中具有该路径的物理资源。可以通过提供相同类型的bean覆盖它。
-- id为`beanNameViewResolver`的BeanNameViewResolver。这是视图解析器链的一个非常有用的成员，它可以在View被解析时收集任何具有相同名称的beans。
-- id为`viewResolver`的ContentNegotiatingViewResolver只会在实际View类型的beans出现时添加。这是一个'主'解析器，它的职责会代理给其他解析器，它会尝试找到客户端发送的一个匹配'Accept'的HTTP头部。这有一篇有用的，关于你需要更多了解的[ContentNegotiatingViewResolver](https://spring.io/blog/2013/06/03/content-negotiation-using-views)的博客，也要具体查看下源码。通过定义一个名叫'viewResolver'的bean，你可以关闭自动配置的ContentNegotiatingViewResolver。
-- 如果使用Thymeleaf，你将有一个id为`thymeleafViewResolver`的ThymeleafViewResolver。它会通过加前缀和后缀的视图名来查找资源（外部配置为`spring.thymeleaf.prefix`和`spring.thymeleaf.suffix`，对应的默认为'classpath:/templates/'和'.html'）。你可以通过提供相同名称的bean来覆盖它。
-- 如果使用FreeMarker，你将有一个id为`freeMarkerViewResolver`的FreeMarkerViewResolver。它会使用加前缀和后缀（外部配置为`spring.freemarker.prefix`和`spring.freemarker.suffix`，对应的默认值为空和'.ftl'）的视图名从加载路径（外部配置为`spring.freemarker.templateLoaderPath`，默认为'classpath:/templates/'）下查找资源。你可以通过提供一个相同名称的bean来覆盖它。
-- 如果使用Groovy模板（实际上只要你把groovy-templates添加到classpath下），你将有一个id为`groovyTemplateViewResolver`的Groovy TemplateViewResolver。它会使用加前缀和后缀（外部属性为`spring.groovy.template.prefix`和`spring.groovy.template.suffix`，对应的默认值为'classpath:/templates/'和'.tpl'）的视图名从加载路径下查找资源。你可以通过提供一个相同名称的bean来覆盖它。
-- 如果使用Velocity，你将有一个id为`velocityViewResolver`的VelocityViewResolver。它会使用加前缀和后缀（外部属性为`spring.velocity.prefix`和`spring.velocity.suffix`，对应的默认值为空和'.vm'）的视图名从加载路径（外部属性为`spring.velocity.resourceLoaderPath`，默认为'classpath:/templates/'）下查找资源。你可以通过提供一个相同名称的bean来覆盖它。
+- bean id為`defaultViewResolver`的InternalResourceViewResolver。這個會定位可以使用DefaultServlet渲染的物理資源（比如，靜態資源和JSP頁麵）。它在視圖（view name）上應用了一個前綴和後綴（默認都為空，但你可以通過`spring.view.prefix`和`spring.view.suffix`外部配置設置），然後查找在servlet上下文中具有該路徑的物理資源。可以通過提供相同類型的bean覆蓋它。
+- id為`beanNameViewResolver`的BeanNameViewResolver。這是視圖解析器鏈的一個非常有用的成員，它可以在View被解析時收集任何具有相同名稱的beans。
+- id為`viewResolver`的ContentNegotiatingViewResolver隻會在實際View類型的beans出現時添加。這是一個'主'解析器，它的職責會代理給其他解析器，它會嘗試找到客戶端發送的一個匹配'Accept'的HTTP頭部。這有一篇有用的，關於你需要更多了解的[ContentNegotiatingViewResolver](https://spring.io/blog/2013/06/03/content-negotiation-using-views)的博客，也要具體查看下源碼。通過定義一個名叫'viewResolver'的bean，你可以關閉自動配置的ContentNegotiatingViewResolver。
+- 如果使用Thymeleaf，你將有一個id為`thymeleafViewResolver`的ThymeleafViewResolver。它會通過加前綴和後綴的視圖名來查找資源（外部配置為`spring.thymeleaf.prefix`和`spring.thymeleaf.suffix`，對應的默認為'classpath:/templates/'和'.html'）。你可以通過提供相同名稱的bean來覆蓋它。
+- 如果使用FreeMarker，你將有一個id為`freeMarkerViewResolver`的FreeMarkerViewResolver。它會使用加前綴和後綴（外部配置為`spring.freemarker.prefix`和`spring.freemarker.suffix`，對應的默認值為空和'.ftl'）的視圖名從加載路徑（外部配置為`spring.freemarker.templateLoaderPath`，默認為'classpath:/templates/'）下查找資源。你可以通過提供一個相同名稱的bean來覆蓋它。
+- 如果使用Groovy模板（實際上隻要你把groovy-templates添加到classpath下），你將有一個id為`groovyTemplateViewResolver`的Groovy TemplateViewResolver。它會使用加前綴和後綴（外部屬性為`spring.groovy.template.prefix`和`spring.groovy.template.suffix`，對應的默認值為'classpath:/templates/'和'.tpl'）的視圖名從加載路徑下查找資源。你可以通過提供一個相同名稱的bean來覆蓋它。
+- 如果使用Velocity，你將有一個id為`velocityViewResolver`的VelocityViewResolver。它會使用加前綴和後綴（外部屬性為`spring.velocity.prefix`和`spring.velocity.suffix`，對應的默認值為空和'.vm'）的視圖名從加載路徑（外部屬性為`spring.velocity.resourceLoaderPath`，默認為'classpath:/templates/'）下查找資源。你可以通過提供一個相同名稱的bean來覆蓋它。
 
-具体参考：  [WebMvcAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/WebMvcAutoConfiguration.java)，[ThymeleafAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/thymeleaf/ThymeleafAutoConfiguration.java)，[FreeMarkerAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/thymeleaf/ThymeleafAutoConfiguration.java)，[GroovyTemplateAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/thymeleaf/ThymeleafAutoConfiguration.java)，[VelocityAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/thymeleaf/ThymeleafAutoConfiguration.java)。
+具體參考：  [WebMvcAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/WebMvcAutoConfiguration.java)，[ThymeleafAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/thymeleaf/ThymeleafAutoConfiguration.java)，[FreeMarkerAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/thymeleaf/ThymeleafAutoConfiguration.java)，[GroovyTemplateAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/thymeleaf/ThymeleafAutoConfiguration.java)，[VelocityAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/thymeleaf/ThymeleafAutoConfiguration.java)。
 
-### 日志
+### 日誌
 
-Spring Boot除了commons-logging  API外没有其他强制性的日志依赖，你有很多可选的日志实现。想要使用[Logback](http://logback.qos.ch/)，你需要包含它，及一些对classpath下commons-logging的绑定。最简单的方式是通过依赖`spring-boot-starter-logging`的starter pom。对于一个web应用程序，你只需添加`spring-boot-starter-web`依赖，因为它依赖于logging starter。例如，使用Maven：
+Spring Boot除了commons-logging  API外沒有其他強製性的日誌依賴，你有很多可選的日誌實現。想要使用[Logback](http://logback.qos.ch/)，你需要包含它，及一些對classpath下commons-logging的綁定。最簡單的方式是通過依賴`spring-boot-starter-logging`的starter pom。對於一個web應用程序，你隻需添加`spring-boot-starter-web`依賴，因為它依賴於logging starter。例如，使用Maven：
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
 </dependency>
 ```
-Spring Boot有一个LoggingSystem抽象，用于尝试通过classpath上下文配置日志系统。如果Logback可用，则首选它。如果你唯一需要做的就是设置不同日志的级别，那可以通过在application.properties中使用`logging.level`前缀实现，比如：
+Spring Boot有一個LoggingSystem抽象，用於嘗試通過classpath上下文配置日誌系統。如果Logback可用，則首選它。如果你唯一需要做的就是設置不同日誌的級別，那可以通過在application.properties中使用`logging.level`前綴實現，比如：
 ```java
 logging.level.org.springframework.web: DEBUG
 logging.level.org.hibernate: ERROR
 ```
-你也可以使用`logging.file`设置日志文件的位置（除控制台之外，默认会输出到控制台）。
+你也可以使用`logging.file`設置日誌文件的位置（除控製台之外，默認會輸出到控製台）。
 
-想要对日志系统进行更细粒度的配置，你需要使用正在说的LoggingSystem支持的原生配置格式。默认情况下，Spring Boot从系统的默认位置加载原生配置（比如对于Logback为`classpath:logback.xml`），但你可以使用`logging.config`属性设置配置文件的位置。
+想要對日誌系統進行更細粒度的配置，你需要使用正在說的LoggingSystem支援的原生配置格式。默認情況下，Spring Boot從系統的默認位置加載原生配置（比如對於Logback為`classpath:logback.xml`），但你可以使用`logging.config`屬性設置配置文件的位置。
 
 * 配置Logback
 
-如果你将一个logback.xml放到classpath根目录下，那它将会被从这加载。Spring Boot提供一个默认的基本配置，如果你只是设置日志级别，那你可以包含它，比如：
+如果你將一個logback.xml放到classpath根目錄下，那它將會被從這加載。Spring Boot提供一個默認的基本配置，如果你只是設置日誌級別，那你可以包含它，比如：
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
@@ -632,20 +632,20 @@ logging.level.org.hibernate: ERROR
     <logger name="org.springframework.web" level="DEBUG"/>
 </configuration>
 ```
-如果查看spring-boot jar包中的默认logback.xml，你将会看到LoggingSystem为你创建的很多有用的系统属性，比如：
-- ${PID}，当前进程id
-- ${LOG_FILE}，如果在Boot外部配置中设置了`logging.file`
-- ${LOG_PATH}，如果设置了`logging.path`（表示日志文件产生的目录）
+如果查看spring-boot jar包中的默認logback.xml，你將會看到LoggingSystem為你創建的很多有用的系統屬性，比如：
+- ${PID}，當前進程id
+- ${LOG_FILE}，如果在Boot外部配置中設置了`logging.file`
+- ${LOG_PATH}，如果設置了`logging.path`（表示日誌文件產生的目錄）
 
-Spring Boot也提供使用自定义的Logback转换器在控制台上输出一些漂亮的彩色ANSI日志信息（不是日志文件）。具体参考默认的`base.xml`配置。
+Spring Boot也提供使用自定義的Logback轉換器在控製台上輸出一些漂亮的彩色ANSI日誌信息（不是日誌文件）。具體參考默認的`base.xml`配置。
 
 如果Groovy在classpath下，你也可以使用logback.groovy配置Logback。
 
 * 配置Log4j
 
-Spring Boot也支持[Log4j](http://logging.apache.org/log4j/1.2)或[Log4j 2](http://logging.apache.org/log4j/2.x)作为日志配置，但只有在它们中的某个在classpath下存在的情况。如果你正在使用starter poms进行依赖装配，这意味着你需要排除Logback，然后包含你选择的Log4j版本。如果你不使用starter poms，那除了你选择的Log4j版本外还要提供commons-logging（至少）。
+Spring Boot也支援[Log4j](http://logging.apache.org/log4j/1.2)或[Log4j 2](http://logging.apache.org/log4j/2.x)作為日誌配置，但隻有在它們中的某個在classpath下存在的情況。如果你正在使用starter poms進行依賴裝配，這意味著你需要排除Logback，然後包含你選擇的Log4j版本。如果你不使用starter poms，那除了你選擇的Log4j版本外還要提供commons-logging（至少）。
 
-最简单的方式可能就是通过starter poms，尽管它需要排除一些依赖，比如，在Maven中：
+最簡單的方式可能就是通過starter poms，盡管它需要排除一些依賴，比如，在Maven中：
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -666,19 +666,19 @@ Spring Boot也支持[Log4j](http://logging.apache.org/log4j/1.2)或[Log4j 2](htt
     <artifactId>spring-boot-starter-log4j</artifactId>
 </dependency>
 ```
-想要使用Log4j 2，只需要依赖`spring-boot-starter-log4j2`而不是`spring-boot-starter-log4j`。
+想要使用Log4j 2，隻需要依賴`spring-boot-starter-log4j2`而不是`spring-boot-starter-log4j`。
 
-**注**：使用Log4j各版本的starters都会收集好依赖以满足common logging的要求（比如，Tomcat中使用`java.util.logging`，但使用Log4j或 Log4j 2作为输出）。具体查看Actuator Log4j或Log4j 2的示例，了解如何将它用于实战。
+**注**：使用Log4j各版本的starters都會收集好依賴以滿足common logging的要求（比如，Tomcat中使用`java.util.logging`，但使用Log4j或 Log4j 2作為輸出）。具體查看Actuator Log4j或Log4j 2的範例，了解如何將它用於實戰。
 
 * 使用YAML或JSON配置Log4j2
 
-除了它的默认XML配置格式，Log4j 2也支持YAML和JSON配置文件。想要使用其他配置文件格式来配置Log4j 2，你需要添加合适的依赖到classpath。为了使用YAML，你需要添加`com.fasterxml.jackson.dataformat:jackson-dataformat-yaml`依赖，Log4j 2将查找名称为`log4j2.yaml`或`log4j2.yml`的配置文件。为了使用JSON，你需要添加`com.fasterxml.jackson.core:jackson-databind`依赖，Log4j 2将查找名称为`log4j2.json`或`log4j2.jsn`的配置文件
+除了它的默認XML配置格式，Log4j 2也支援YAML和JSON配置文件。想要使用其他配置文件格式來配置Log4j 2，你需要添加合適的依賴到classpath。為了使用YAML，你需要添加`com.fasterxml.jackson.dataformat:jackson-dataformat-yaml`依賴，Log4j 2將查找名稱為`log4j2.yaml`或`log4j2.yml`的配置文件。為了使用JSON，你需要添加`com.fasterxml.jackson.core:jackson-databind`依賴，Log4j 2將查找名稱為`log4j2.json`或`log4j2.jsn`的配置文件
 
-### 数据访问
+### 數據訪問
 
-* 配置一个数据源
+* 配置一個數據源
 
-想要覆盖默认的设置只需要定义一个你自己的DataSource类型的`@Bean`。Spring Boot提供一个工具构建类DataSourceBuilder，可用来创建一个标准的DataSource（如果它处于classpath下），或者仅创建你自己的DataSource，然后将它和在[Section 23.7.1, “Third-party configuration”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-external-config-3rd-party-configuration)解释的一系列Environment属性绑定。
+想要覆蓋默認的設置隻需要定義一個你自己的DataSource類型的`@Bean`。Spring Boot提供一個工具建構類DataSourceBuilder，可用來創建一個標準的DataSource（如果它處於classpath下），或者僅創建你自己的DataSource，然後將它和在[Section 23.7.1, “Third-party configuration”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-external-config-3rd-party-configuration)解釋的一係列Environment屬性綁定。
 
 比如：
 ```java
@@ -693,11 +693,11 @@ datasource.mine.jdbcUrl=jdbc:h2:mem:mydb
 datasource.mine.user=sa
 datasource.mine.poolSize=30
 ```
-具体参考'Spring Boot特性'章节中的[Section 28.1, “Configure a DataSource”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-configure-datasource)和[DataSourceAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/jdbc/DataSourceAutoConfiguration.java)类源码。
+具體參考'Spring Boot特性'章節中的[Section 28.1, “Configure a DataSource”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-configure-datasource)和[DataSourceAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/jdbc/DataSourceAutoConfiguration.java)類源碼。
 
-* 配置两个数据源
+* 配置兩個數據源
 
-创建多个数据源和创建第一个工作都是一样的。如果使用针对JDBC或JPA的默认自动配置，你可能想要将其中一个设置为`@Primary`（然后它就能被任何`@Autowired`注入获取）。
+創建多個數據源和創建第一個工作都是一樣的。如果使用針對JDBC或JPA的默認自動配置，你可能想要將其中一個設置為`@Primary`（然後它就能被任何`@Autowired`注入獲取）。
 ```java
 @Bean
 @Primary
@@ -712,17 +712,17 @@ public DataSource secondaryDataSource() {
     return DataSourceBuilder.create().build();
 }
 ```
-* 使用Spring Data仓库
+* 使用Spring Data倉庫
 
-Spring Data可以为你的`@Repository`接口创建各种风格的实现。Spring Boot会为你处理所有事情，只要那些`@Repositories`接口跟你的`@EnableAutoConfiguration`类处于相同的包（或子包）。
+Spring Data可以為你的`@Repository`接口創建各種風格的實現。Spring Boot會為你處理所有事情，隻要那些`@Repositories`接口跟你的`@EnableAutoConfiguration`類處於相同的包（或子包）。
 
-对于很多应用来说，你需要做的就是将正确的Spring Data依赖添加到classpath下（对于JPA有一个`spring-boot-starter-data-jpa`，对于Mongodb有一个`spring-boot-starter-data-mongodb`），创建一些repository接口来处理`@Entity`对象。具体参考[JPA sample](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-data-jpa)或[Mongodb sample](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-data-mongodb)。
+對於很多應用來說，你需要做的就是將正確的Spring Data依賴添加到classpath下（對於JPA有一個`spring-boot-starter-data-jpa`，對於Mongodb有一個`spring-boot-starter-data-mongodb`），創建一些repository接口來處理`@Entity`對象。具體參考[JPA sample](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-data-jpa)或[Mongodb sample](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-data-mongodb)。
 
-Spring Boot会基于它找到的`@EnableAutoConfiguration`来尝试猜测你的`@Repository`定义的位置。想要获取更多控制，可以使用`@EnableJpaRepositories`注解（来自Spring Data JPA）。
+Spring Boot會基於它找到的`@EnableAutoConfiguration`來嘗試猜測你的`@Repository`定義的位置。想要獲取更多控製，可以使用`@EnableJpaRepositories`注解（來自Spring Data JPA）。
 
-* 从Spring配置分离`@Entity`定义
+* 從Spring配置分離`@Entity`定義
 
-Spring Boot会基于它找到的`@EnableAutoConfiguration`来尝试猜测你的`@Entity`定义的位置。想要获取更多控制，你可以使用`@EntityScan`注解，比如：
+Spring Boot會基於它找到的`@EnableAutoConfiguration`來嘗試猜測你的`@Entity`定義的位置。想要獲取更多控製，你可以使用`@EntityScan`注解，比如：
 ```java
 @Configuration
 @EnableAutoConfiguration
@@ -733,28 +733,28 @@ public class Application {
 
 }
 ```
-* 配置JPA属性
+* 配置JPA屬性
 
-Spring Data JPA已经提供了一些独立的配置选项（比如，针对SQL日志），并且Spring Boot会暴露它们，针对hibernate的外部配置属性也更多些。最常见的选项如下：
+Spring Data JPA已經提供了一些獨立的配置選項（比如，針對SQL日誌），並且Spring Boot會暴露它們，針對hibernate的外部配置屬性也更多些。最常見的選項如下：
 ```java
 spring.jpa.hibernate.ddl-auto: create-drop
 spring.jpa.hibernate.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
 spring.jpa.database: H2
 spring.jpa.show-sql: true
 ```
-（由于宽松的数据绑定策略，连字符或下划线作为属性keys作用应该是等效的）`ddl-auto`配置是个特殊情况，它有不同的默认设置，这取决于你是否使用一个内嵌数据库（create-drop）。当本地EntityManagerFactory被创建时，所有`spring.jpa.properties.*`属性都被作为正常的JPA属性（去掉前缀）传递进去了。
+（由於寬鬆的數據綁定策略，連字符或下劃線作為屬性keys作用應該是等效的）`ddl-auto`配置是個特殊情況，它有不同的默認設置，這取決於你是否使用一個內嵌數據庫（create-drop）。當本地EntityManagerFactory被創建時，所有`spring.jpa.properties.*`屬性都被作為正常的JPA屬性（去掉前綴）傳遞進去了。
 
-具体参考[HibernateJpaAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaAutoConfiguration.java)和[JpaBaseConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/orm/jpa/JpaBaseConfiguration.java)。
+具體參考[HibernateJpaAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaAutoConfiguration.java)和[JpaBaseConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/orm/jpa/JpaBaseConfiguration.java)。
 
-* 使用自定义的EntityManagerFactory
+* 使用自定義的EntityManagerFactory
 
-为了完全控制EntityManagerFactory的配置，你需要添加一个名为`entityManagerFactory`的`@Bean`。Spring Boot自动配置会根据是否存在该类型的bean来关闭它的实体管理器（entity manager）。
+為了完全控製EntityManagerFactory的配置，你需要添加一個名為`entityManagerFactory`的`@Bean`。Spring Boot自動配置會根據是否存在該類型的bean來關閉它的實體管理器（entity manager）。
 
-* 使用两个EntityManagers
+* 使用兩個EntityManagers
 
-即使默认的EntityManagerFactory工作的很好，你也需要定义一个新的EntityManagerFactory，因为一旦出现第二个该类型的bean，默认的将会被关闭。为了轻松的实现该操作，你可以使用Spring Boot提供的EntityManagerBuilder，或者如果你喜欢的话可以直接使用来自Spring ORM的LocalContainerEntityManagerFactoryBean。
+即使默認的EntityManagerFactory工作的很好，你也需要定義一個新的EntityManagerFactory，因為一旦出現第二個該類型的bean，默認的將會被關閉。為了輕鬆的實現該操作，你可以使用Spring Boot提供的EntityManagerBuilder，或者如果你喜歡的話可以直接使用來自Spring ORM的LocalContainerEntityManagerFactoryBean。
 
-示例：
+範例：
 ```java
 // add two data sources configured as above
 
@@ -778,116 +778,116 @@ public LocalContainerEntityManagerFactoryBean orderEntityManagerFactory(
             .build();
 }
 ```
-上面的配置靠自己基本可以运行。想要完成作品你也需要为两个EntityManagers配置TransactionManagers。其中的一个会被Spring Boot默认的JpaTransactionManager获取，如果你将它标记为`@Primary`。另一个需要显式注入到一个新实例。或你可以使用一个JTA事物管理器生成它两个。
+上麵的配置靠自己基本可以運行。想要完成作品你也需要為兩個EntityManagers配置TransactionManagers。其中的一個會被Spring Boot默認的JpaTransactionManager獲取，如果你將它標記為`@Primary`。另一個需要顯式注入到一個新實例。或你可以使用一個JTA事物管理器生成它兩個。
 
 * 使用普通的persistence.xml
 
-Spring不要求使用XML配置JPA提供者（provider），并且Spring Boot假定你想要充分利用该特性。如果你倾向于使用`persistence.xml`，那你需要定义你自己的id为'entityManagerFactory'的LocalEntityManagerFactoryBean类型的`@Bean`，并在那设置持久化单元的名称。
+Spring不要求使用XML配置JPA提供者（provider），並且Spring Boot假定你想要充分利用該特性。如果你傾向於使用`persistence.xml`，那你需要定義你自己的id為'entityManagerFactory'的LocalEntityManagerFactoryBean類型的`@Bean`，並在那設置持久化單元的名稱。
 
-默认设置可查看[JpaBaseConfiguration](https://github.com/spring-projects/spring-boot/blob/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/orm/jpa/JpaBaseConfiguration.java)
+默認設置可查看[JpaBaseConfiguration](https://github.com/spring-projects/spring-boot/blob/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/orm/jpa/JpaBaseConfiguration.java)
 
-* 使用Spring Data JPA和Mongo仓库
+* 使用Spring Data JPA和Mongo倉庫
 
-Spring Data JPA和Spring Data Mongo都能自动为你创建Repository实现。如果它们同时出现在classpath下，你可能需要添加额外的配置来告诉Spring Boot你想要哪个（或两个）为你创建仓库。最明确地方式是使用标准的Spring Data `@Enable*Repositories`，然后告诉它你的Repository接口的位置（此处*即可以是Jpa，也可以是Mongo，或者两者都是）。
+Spring Data JPA和Spring Data Mongo都能自動為你創建Repository實現。如果它們同時出現在classpath下，你可能需要添加額外的配置來告訴Spring Boot你想要哪個（或兩個）為你創建倉庫。最明確地方式是使用標準的Spring Data `@Enable*Repositories`，然後告訴它你的Repository接口的位置（此處*即可以是Jpa，也可以是Mongo，或者兩者都是）。
 
-这里也有`spring.data.*.repositories.enabled`标志，可用来在外部配置中开启或关闭仓库的自动配置。这在你想关闭Mongo仓库，但仍旧使用自动配置的MongoTemplate时非常有用。
+這裡也有`spring.data.*.repositories.enabled`標誌，可用來在外部配置中開啟或關閉倉庫的自動配置。這在你想關閉Mongo倉庫，但仍舊使用自動配置的MongoTemplate時非常有用。
 
-相同的障碍和特性也存在于其他自动配置的Spring Data仓库类型（Elasticsearch, Solr）。只需要改变对应注解的名称和标志。
+相同的障礙和特性也存在於其他自動配置的Spring Data倉庫類型（Elasticsearch, Solr）。隻需要改變對應注解的名稱和標誌。
 
-* 将Spring Data仓库暴露为REST端点
+* 將Spring Data倉庫暴露為REST端點
 
-Spring Data REST能够将Repository的实现暴露为REST端点，只要该应用启用Spring MVC。
+Spring Data REST能夠將Repository的實現暴露為REST端點，隻要該應用啟用Spring MVC。
 
-Spring Boot暴露一系列来自`spring.data.rest`命名空间的有用属性来定制化[RepositoryRestConfiguration](http://docs.spring.io/spring-data/rest/docs/current/api/org/springframework/data/rest/core/config/RepositoryRestConfiguration.html)。如果需要提供其他定制，你可以创建一个继承自SpringBootRepositoryRestMvcConfiguration的`@Configuration`类。该类功能和RepositoryRestMvcConfiguration相同，但允许你继续使用`spring.data.rest.*`属性。
+Spring Boot暴露一係列來自`spring.data.rest`命名空間的有用屬性來定製化[RepositoryRestConfiguration](http://docs.spring.io/spring-data/rest/docs/current/api/org/springframework/data/rest/core/config/RepositoryRestConfiguration.html)。如果需要提供其他定製，你可以創建一個繼承自SpringBootRepositoryRestMvcConfiguration的`@Configuration`類。該類功能和RepositoryRestMvcConfiguration相同，但允許你繼續使用`spring.data.rest.*`屬性。
 
-### 数据库初始化
+### 數據庫初始化
 
-一个数据库可以使用不同的方式进行初始化，这取决于你的技术栈。或者你可以手动完成该任务，只要数据库是单独的过程。
+一個數據庫可以使用不同的方式進行初始化，這取決於你的技術棧。或者你可以手動完成該任務，隻要數據庫是單獨的過程。
 
-* 使用JPA初始化数据库
+* 使用JPA初始化數據庫
 
-JPA有个生成DDL的特性，这些可以设置为在数据库启动时运行。这可以通过两个外部属性进行控制：
+JPA有個生成DDL的特性，這些可以設置為在數據庫啟動時運行。這可以通過兩個外部屬性進行控製：
 
-- `spring.jpa.generate-ddl`（boolean）控制该特性的关闭和开启，跟实现者没关系
-- `spring.jpa.hibernate.ddl-auto`（enum）是一个Hibernate特性，用于更细力度的控制该行为。更多详情参考以下内容。
+- `spring.jpa.generate-ddl`（boolean）控製該特性的關閉和開啟，跟實現者沒關係
+- `spring.jpa.hibernate.ddl-auto`（enum）是一個Hibernate特性，用於更細力度的控製該行為。更多詳情參考以下內容。
 
-* 使用Hibernate初始化数据库
+* 使用Hibernate初始化數據庫
 
-你可以显式设置`spring.jpa.hibernate.ddl-auto`，标准的Hibernate属性值有`none`，`validate`，`update`，`create`，`create-drop`。Spring Boot根据你的数据库是否为内嵌数据库来选择相应的默认值，如果是内嵌型的则默认值为`create-drop`，否则为`none`。通过查看Connection类型可以检查是否为内嵌型数据库，hsqldb，h2和derby是内嵌的，其他都不是。当从内存数据库迁移到一个真正的数据库时，你需要当心，在新的平台中不能对数据库表和数据是否存在进行臆断。你也需要显式设置`ddl-auto`，或使用其他机制初始化数据库。
+你可以顯式設置`spring.jpa.hibernate.ddl-auto`，標準的Hibernate屬性值有`none`，`validate`，`update`，`create`，`create-drop`。Spring Boot根據你的數據庫是否為內嵌數據庫來選擇相應的默認值，如果是內嵌型的則默認值為`create-drop`，否則為`none`。通過查看Connection類型可以檢查是否為內嵌型數據庫，hsqldb，h2和derby是內嵌的，其他都不是。當從內存數據庫遷移到一個真正的數據庫時，你需要當心，在新的平台中不能對數據庫表和數據是否存在進行臆斷。你也需要顯式設置`ddl-auto`，或使用其他機製初始化數據庫。
 
-此外，启动时处于classpath根目录下的import.sql文件会被执行。这在demos或测试时很有用，但在生产环境中你可能不期望这样。这是Hibernate的特性，和Spring没有一点关系。
+此外，啟動時處於classpath根目錄下的import.sql文件會被執行。這在demos或測試時很有用，但在生產環境中你可能不期望這樣。這是Hibernate的特性，和Spring沒有一點關係。
 
-* 使用Spring JDBC初始化数据库
+* 使用Spring JDBC初始化數據庫
 
-Spring JDBC有一个DataSource初始化特性。Spring Boot默认启用了该特性，并从标准的位置schema.sql和data.sql（位于classpath根目录）加载SQL。此外，Spring Boot将加载`schema-${platform}.sql`和`data-${platform}.sql`文件（如果存在），在这里platform是`spring.datasource.platform`的值，比如，你可以将它设置为数据库的供应商名称（hsqldb, h2, oracle, mysql, postgresql等）。Spring Boot默认启用Spring JDBC初始化快速失败特性，所以如果脚本导致异常产生，那应用程序将启动失败。脚本的位置可以通过设置`spring.datasource.schema`和`spring.datasource.data`来改变，如果设置`spring.datasource.initialize=false`则哪个位置都不会被处理。
+Spring JDBC有一個DataSource初始化特性。Spring Boot默認啟用了該特性，並從標準的位置schema.sql和data.sql（位於classpath根目錄）加載SQL。此外，Spring Boot將加載`schema-${platform}.sql`和`data-${platform}.sql`文件（如果存在），在這裡platform是`spring.datasource.platform`的值，比如，你可以將它設置為數據庫的供應商名稱（hsqldb, h2, oracle, mysql, postgresql等）。Spring Boot默認啟用Spring JDBC初始化快速失敗特性，所以如果腳本導致異常產生，那應用程序將啟動失敗。腳本的位置可以通過設置`spring.datasource.schema`和`spring.datasource.data`來改變，如果設置`spring.datasource.initialize=false`則哪個位置都不會被處理。
 
-你可以设置`spring.datasource.continueOnError=true`禁用快速失败特性。一旦应用程序成熟并被部署了很多次，那该设置就很有用，因为脚本可以充当"可怜人的迁移"-例如，插入失败时意味着数据已经存在，也就没必要阻止应用继续运行。
+你可以設置`spring.datasource.continueOnError=true`禁用快速失敗特性。一旦應用程序成熟並被部署了很多次，那該設置就很有用，因為腳本可以充當"可憐人的遷移"-例如，插入失敗時意味著數據已經存在，也就沒必要阻止應用繼續運行。
 
-如果你想要在一个JPA应用中使用schema.sql，那如果Hibernate试图创建相同的表，`ddl-auto=create-drop`将导致错误产生。为了避免那些错误，可以将`ddl-auto`设置为“”（推荐）或“none”。不管是否使用`ddl-auto=create-drop`，你总可以使用data.sql初始化新数据。
+如果你想要在一個JPA應用中使用schema.sql，那如果Hibernate試圖創建相同的表，`ddl-auto=create-drop`將導致錯誤產生。為了避免那些錯誤，可以將`ddl-auto`設置為“”（推薦）或“none”。不管是否使用`ddl-auto=create-drop`，你總可以使用data.sql初始化新數據。
 
-* 初始化Spring Batch数据库
+* 初始化Spring Batch數據庫
 
-如果你正在使用Spring Batch，那么它会为大多数的流行数据库平台预装SQL初始化脚本。Spring Boot会检测你的数据库类型，并默认执行那些脚本，在这种情况下将关闭快速失败特性（错误被记录但不会阻止应用启动）。这是因为那些脚本是可信任的，通常不会包含bugs，所以错误会被忽略掉，并且对错误的忽略可以让脚本具有幂等性。你可以使用`spring.batch.initializer.enabled=false`显式关闭初始化功能。
+如果你正在使用Spring Batch，那麼它會為大多數的流行數據庫平台預裝SQL初始化腳本。Spring Boot會檢測你的數據庫類型，並默認執行那些腳本，在這種情況下將關閉快速失敗特性（錯誤被記錄但不會阻止應用啟動）。這是因為那些腳本是可信任的，通常不會包含bugs，所以錯誤會被忽略掉，並且對錯誤的忽略可以讓腳本具有冪等性。你可以使用`spring.batch.initializer.enabled=false`顯式關閉初始化功能。
 
-* 使用一个高级别的数据迁移工具
+* 使用一個高級別的數據遷移工具
 
-Spring Boot跟高级别的数据迁移工具[Flyway](http://flywaydb.org/)(基于SQL)和[Liquibase](http://www.liquibase.org/)(XML)工作的很好。通常我们倾向于Flyway，因为它一眼看去好像很容易，另外它通常不需要平台独立：一般一个或至多需要两个平台。
+Spring Boot跟高級別的數據遷移工具[Flyway](http://flywaydb.org/)(基於SQL)和[Liquibase](http://www.liquibase.org/)(XML)工作的很好。通常我們傾向於Flyway，因為它一眼看去好像很容易，另外它通常不需要平台獨立：一般一個或至多需要兩個平台。
 
-- 启动时执行Flyway数据库迁移
+- 啟動時執行Flyway數據庫遷移
 
-想要在启动时自动运行Flyway数据库迁移，需要将`org.flywaydb:flyway-core`添加到你的classpath下。
+想要在啟動時自動運行Flyway數據庫遷移，需要將`org.flywaydb:flyway-core`添加到你的classpath下。
 
-迁移是一些`V<VERSION>__<NAME>.sql`格式的脚本（`<VERSION>`是一个下划线分割的版本号，比如'1'或'2_1'）。默认情况下，它们存放在一个`classpath:db/migration`的文件夹中，但你可以使用`flyway.locations`（一个列表）来改变它。详情可参考flyway-core中的Flyway类，查看一些可用的配置，比如schemas。Spring Boot在[FlywayProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/flyway/FlywayProperties.java)中提供了一个小的属性集，可用于禁止迁移，或关闭位置检测。
+遷移是一些`V<VERSION>__<NAME>.sql`格式的腳本（`<VERSION>`是一個下劃線分割的版本號，比如'1'或'2_1'）。默認情況下，它們存放在一個`classpath:db/migration`的文件夾中，但你可以使用`flyway.locations`（一個列表）來改變它。詳情可參考flyway-core中的Flyway類，查看一些可用的配置，比如schemas。Spring Boot在[FlywayProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/flyway/FlywayProperties.java)中提供了一個小的屬性集，可用於禁止遷移，或關閉位置檢測。
 
-默认情况下，Flyway将自动注入（`@Primary`）DataSource到你的上下文，并用它进行数据迁移。如果你想使用一个不同的DataSource，你可以创建一个，并将它标记为`@FlywayDataSource`的`@Bean`-如果你这样做了，且想要两个数据源，记得创建另一个并将它标记为`@Primary`。或者你可以通过在外部配置文件中设置`flyway.[url,user,password]`来使用Flyway的原生DataSource。
+默認情況下，Flyway將自動注入（`@Primary`）DataSource到你的上下文，並用它進行數據遷移。如果你想使用一個不同的DataSource，你可以創建一個，並將它標記為`@FlywayDataSource`的`@Bean`-如果你這樣做了，且想要兩個數據源，記得創建另一個並將它標記為`@Primary`。或者你可以通過在外部配置文件中設置`flyway.[url,user,password]`來使用Flyway的原生DataSource。
 
-这是一个[Flyway示例](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-flyway)，你可以作为参考。
+這是一個[Flyway範例](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-flyway)，你可以作為參考。
 
-- 启动时执行Liquibase数据库迁移
+- 啟動時執行Liquibase數據庫遷移
 
-想要在启动时自动运行Liquibase数据库迁移，你需要将`org.liquibase:liquibase-core`添加到classpath下。
+想要在啟動時自動運行Liquibase數據庫遷移，你需要將`org.liquibase:liquibase-core`添加到classpath下。
 
-主改变日志（master change log）默认从`db/changelog/db.changelog-master.yaml`读取，但你可以使用`liquibase.change-log`进行设置。详情查看[LiquibaseProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/liquibase/LiquibaseProperties.java)以获取可用设置，比如上下文，默认的schema等。
+主改變日誌（master change log）默認從`db/changelog/db.changelog-master.yaml`讀取，但你可以使用`liquibase.change-log`進行設置。詳情查看[LiquibaseProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/liquibase/LiquibaseProperties.java)以獲取可用設置，比如上下文，默認的schema等。
 
-这里有个[Liquibase示例](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-liquibase)可作为参考。
+這裡有個[Liquibase範例](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-liquibase)可作為參考。
 
-### 批处理应用
+### 批處理應用
 
-* 在启动时执行Spring Batch作业
+* 在啟動時執行Spring Batch作業
 
-你可以在上下文的某个地方添加`@EnableBatchProcessing`来启用Spring Batch的自动配置功能。
+你可以在上下文的某個地方添加`@EnableBatchProcessing`來啟用Spring Batch的自動配置功能。
 
-默认情况下，在启动时它会执行应用的所有作业（Jobs），具体查看[JobLauncherCommandLineRunner](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/batch/JobLauncherCommandLineRunner.java)。你可以通过指定`spring.batch.job.names`（多个作业名以逗号分割）来缩小到一个特定的作业或多个作业。
+默認情況下，在啟動時它會執行應用的所有作業（Jobs），具體查看[JobLauncherCommandLineRunner](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/batch/JobLauncherCommandLineRunner.java)。你可以通過指定`spring.batch.job.names`（多個作業名以逗號分割）來縮小到一個特定的作業或多個作業。
 
-如果应用上下文包含一个JobRegistry，那么处于`spring.batch.job.names`中的作业将会从registry中查找，而不是从上下文中自动装配。这是复杂系统中常见的一个模式，在这些系统中多个作业被定义在子上下文和注册中心。
+如果應用上下文包含一個JobRegistry，那麼處於`spring.batch.job.names`中的作業將會從registry中查找，而不是從上下文中自動裝配。這是複雜系統中常見的一個模式，在這些系統中多個作業被定義在子上下文和注冊中心。
 
-具体参考[BatchAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/batch/BatchAutoConfiguration.java)和[@EnableBatchProcessing](https://github.com/spring-projects/spring-batch/blob/master/spring-batch-core/src/main/java/org/springframework/batch/core/configuration/annotation/EnableBatchProcessing.java)。
+具體參考[BatchAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/batch/BatchAutoConfiguration.java)和[@EnableBatchProcessing](https://github.com/spring-projects/spring-batch/blob/master/spring-batch-core/src/main/java/org/springframework/batch/core/configuration/annotation/EnableBatchProcessing.java)。
 
-### 执行器（Actuator）
+### 執行器（Actuator）
 
-* 改变HTTP端口或执行器端点的地址
+* 改變HTTP端口或執行器端點的地址
 
-在一个单独的应用中，执行器的HTTP端口默认和主HTTP端口相同。想要让应用监听不同的端口，你可以设置外部属性`management.port`。为了监听一个完全不同的网络地址（比如，你有一个用于管理的内部网络和一个用于用户应用程序的外部网络），你可以将`management.address`设置为一个可用的IP地址，然后将服务器绑定到该地址。
+在一個單獨的應用中，執行器的HTTP端口默認和主HTTP端口相同。想要讓應用監聽不同的端口，你可以設置外部屬性`management.port`。為了監聽一個完全不同的網絡地址（比如，你有一個用於管理的內部網絡和一個用於用戶應用程序的外部網絡），你可以將`management.address`設置為一個可用的IP地址，然後將服務器綁定到該地址。
 
-查看[ManagementServerProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/autoconfigure/ManagementServerProperties.java)源码和'Production-ready特性'章节中的[Section 41.3, “Customizing the management server port”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-customizing-management-server-port)来获取更多详情。
+查看[ManagementServerProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-actuator/src/main/java/org/springframework/boot/actuate/autoconfigure/ManagementServerProperties.java)源碼和'Production-ready特性'章節中的[Section 41.3, “Customizing the management server port”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready-customizing-management-server-port)來獲取更多詳情。
 
-* 自定义'白标'（whitelabel，可以了解下相关理念）错误页面
+* 自定義'白標'（whitelabel，可以了解下相關理念）錯誤頁麵
 
-Spring Boot安装了一个'whitelabel'错误页面，如果你遇到一个服务器错误（机器客户端消费的是JSON，其他媒体类型则会看到一个具有正确错误码的合乎情理的响应），那就能在客户端浏览器中看到该页面。你可以设置`error.whitelabel.enabled=false`来关闭该功能，但通常你想要添加自己的错误页面来取代whitelabel。确切地说，如何实现取决于你使用的模板技术。例如，你正在使用Thymeleaf，你将添加一个error.html模板。如果你正在使用FreeMarker，那你将添加一个error.ftl模板。通常，你需要的只是一个名称为error的View，和/或一个处理`/error`路径的`@Controller`。除非你替换了一些默认配置，否则你将在你的ApplicationContext中找到一个BeanNameViewResolver，所以一个id为error的`@Bean`可能是完成该操作的一个简单方式。详情参考[ErrorMvcAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/ErrorMvcAutoConfiguration.java)。
+Spring Boot安裝了一個'whitelabel'錯誤頁麵，如果你遇到一個服務器錯誤（機器客戶端消費的是JSON，其他媒體類型則會看到一個具有正確錯誤碼的合乎情理的響應），那就能在客戶端瀏覽器中看到該頁麵。你可以設置`error.whitelabel.enabled=false`來關閉該功能，但通常你想要添加自己的錯誤頁麵來取代whitelabel。確切地說，如何實現取決於你使用的模板技術。例如，你正在使用Thymeleaf，你將添加一個error.html模板。如果你正在使用FreeMarker，那你將添加一個error.ftl模板。通常，你需要的只是一個名稱為error的View，和/或一個處理`/error`路徑的`@Controller`。除非你替換了一些默認配置，否則你將在你的ApplicationContext中找到一個BeanNameViewResolver，所以一個id為error的`@Bean`可能是完成該操作的一個簡單方式。詳情參考[ErrorMvcAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/ErrorMvcAutoConfiguration.java)。
 
-查看[Error Handling](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-error-handling)章节，了解下如何将处理器（handlers）注册到servlet容器中。
+查看[Error Handling](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-error-handling)章節，了解下如何將處理器（handlers）注冊到servlet容器中。
 
 ### 安全
 
-* 关闭Spring Boot安全配置
+* 關閉Spring Boot安全配置
 
-不管你在应用的什么地方定义了一个使用`@EnableWebSecurity`注解的`@Configuration`，它将会关闭Spring Boot中的默认webapp安全设置。想要调整默认值，你可以尝试设置`security.*`属性（具体查看[SecurityProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/security/SecurityProperties.java)和[常见应用属性](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#common-application-properties-security)的SECURITY章节）。
+不管你在應用的什麼地方定義了一個使用`@EnableWebSecurity`注解的`@Configuration`，它將會關閉Spring Boot中的默認webapp安全設置。想要調整默認值，你可以嘗試設置`security.*`屬性（具體查看[SecurityProperties](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/security/SecurityProperties.java)和[常見應用屬性](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#common-application-properties-security)的SECURITY章節）。
 
-* 改变AuthenticationManager并添加用户账号
+* 改變AuthenticationManager並添加用戶賬號
 
-如果你提供了一个AuthenticationManager类型的`@Bean`，那么默认的就不会被创建了，所以你可以获得Spring Security可用的全部特性（比如，[不同的认证选项](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-authentication)）。
+如果你提供了一個AuthenticationManager類型的`@Bean`，那麼默認的就不會被創建了，所以你可以獲得Spring Security可用的全部特性（比如，[不同的認證選項](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-authentication)）。
 
-Spring Security也提供了一个方便的AuthenticationManagerBuilder，可用于构建具有常见选项的AuthenticationManager。在一个webapp中，推荐将它注入到WebSecurityConfigurerAdapter的一个void方法中，比如：
+Spring Security也提供了一個方便的AuthenticationManagerBuilder，可用於建構具有常見選項的AuthenticationManager。在一個webapp中，推薦將它注入到WebSecurityConfigurerAdapter的一個void方法中，比如：
 ```java
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -901,9 +901,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // ... other stuff for application security
 }
 ```
-如果把它放到一个内部类或一个单独的类中，你将得到最好的结果（也就是不跟很多其他`@Beans`混合在一起将允许你改变实例化的顺序）。[secure web sample](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-web-secure)是一个有用的参考模板。
+如果把它放到一個內部類或一個單獨的類中，你將得到最好的結果（也就是不跟很多其他`@Beans`混合在一起將允許你改變實例化的順序）。[secure web sample](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-web-secure)是一個有用的參考模板。
 
-如果你遇到了实例化问题（比如，使用JDBC或JPA进行用户详细信息的存储），那将AuthenticationManagerBuilder回调提取到一个GlobalAuthenticationConfigurerAdapter（放到init()方法内以防其他地方也需要authentication manager）可能是个不错的选择，比如：
+如果你遇到了實例化問題（比如，使用JDBC或JPA進行用戶詳細信息的存儲），那將AuthenticationManagerBuilder回調提取到一個GlobalAuthenticationConfigurerAdapter（放到init()方法內以防其他地方也需要authentication manager）可能是個不錯的選擇，比如：
 ```java
 @Configuration
 public class AuthenticationManagerConfiguration extends
@@ -916,50 +916,50 @@ public class AuthenticationManagerConfiguration extends
 
 }
 ```
-* 当前端使用代理服务器时，启用HTTPS
+* 當前端使用代理服務器時，啟用HTTPS
 
-对于任何应用来说，确保所有的主端点（URL）都只在HTTPS下可用是个重要的苦差事。如果你使用Tomcat作为servlet容器，那Spring Boot如果发现一些环境设置的话，它将自动添加Tomcat自己的RemoteIpValve，你也可以依赖于HttpServletRequest来报告是否请求是安全的（即使代理服务器的downstream处理真实的SSL终端）。这个标准行为取决于某些请求头是否出现（`x-forwarded-for`和`x-forwarded-proto`），这些请求头的名称都是约定好的，所以对于大多数前端和代理都是有效的。
+對於任何應用來說，確保所有的主端點（URL）都隻在HTTPS下可用是個重要的苦差事。如果你使用Tomcat作為servlet容器，那Spring Boot如果發現一些環境設置的話，它將自動添加Tomcat自己的RemoteIpValve，你也可以依賴於HttpServletRequest來報告是否請求是安全的（即使代理服務器的downstream處理真實的SSL終端）。這個標準行為取決於某些請求頭是否出現（`x-forwarded-for`和`x-forwarded-proto`），這些請求頭的名稱都是約定好的，所以對於大多數前端和代理都是有效的。
 
-你可以向application.properties添加以下设置里开启该功能，比如：
+你可以向application.properties添加以下設置裡開啟該功能，比如：
 ```yml
 server.tomcat.remote_ip_header=x-forwarded-for
 server.tomcat.protocol_header=x-forwarded-proto
 ```
-（这些属性出现一个就会开启该功能，或者你可以通过添加一个TomcatEmbeddedServletContainerFactory bean自己添加RemoteIpValve）
+（這些屬性出現一個就會開啟該功能，或者你可以通過添加一個TomcatEmbeddedServletContainerFactory bean自己添加RemoteIpValve）
 
-Spring Security也可以配置成针对所以或某些请求需要一个安全渠道（channel）。想要在一个Spring Boot应用中开启它，你只需将application.properties中的`security.require_ssl`设置为`true`即可。
+Spring Security也可以配置成針對所以或某些請求需要一個安全渠道（channel）。想要在一個Spring Boot應用中開啟它，你隻需將application.properties中的`security.require_ssl`設置為`true`即可。
 
-### 热交换
+### 熱交換
 
-* 重新加载静态内容
+* 重新加載靜態內容
 
-Spring Boot有很多用于热加载的选项。使用IDE开发是一个不错的方式，特别是需要调试的时候（所有的现代IDEs都允许重新加载静态资源，通常也支持对变更的Java类进行热交换）。[Maven和Gradle插件](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#build-tool-plugins)也支持命令行下的静态文件热加载。如果你使用其他高级工具编写css/js，并使用外部的css/js编译器，那你就可以充分利用该功能。
+Spring Boot有很多用於熱加載的選項。使用IDE開發是一個不錯的方式，特別是需要調試的時候（所有的現代IDEs都允許重新加載靜態資源，通常也支援對變更的Java類進行熱交換）。[Maven和Gradle插件](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#build-tool-plugins)也支援命令行下的靜態文件熱加載。如果你使用其他高級工具編寫css/js，並使用外部的css/js編譯器，那你就可以充分利用該功能。
 
-* 在不重启容器的情况下重新加载Thymeleaf模板
+* 在不重啟容器的情況下重新加載Thymeleaf模板
 
-如果你正在使用Thymeleaf，那就将`spring.thymeleaf.cache`设置为false。查看[ThymeleafAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/thymeleaf/ThymeleafAutoConfiguration.java)可以获取其他Thymeleaf自定义选项。
+如果你正在使用Thymeleaf，那就將`spring.thymeleaf.cache`設置為false。查看[ThymeleafAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/thymeleaf/ThymeleafAutoConfiguration.java)可以獲取其他Thymeleaf自定義選項。
 
-* 在不重启容器的情况下重新加载FreeMarker模板
+* 在不重啟容器的情況下重新加載FreeMarker模板
 
-如果你正在使用FreeMarker，那就将`spring.freemarker.cache`设置为false。查看[FreeMarkerAutoConfiguration ](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/freemarker/FreeMarkerAutoConfiguration.java)可以获取其他FreeMarker自定义选项。
+如果你正在使用FreeMarker，那就將`spring.freemarker.cache`設置為false。查看[FreeMarkerAutoConfiguration ](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/freemarker/FreeMarkerAutoConfiguration.java)可以獲取其他FreeMarker自定義選項。
 
-* 在不重启容器的情况下重新加载Groovy模板
+* 在不重啟容器的情況下重新加載Groovy模板
 
-如果你正在使用Groovy模板，那就将`spring.groovy.template.cache`设置为false。查看[GroovyTemplateAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/groovy/template/GroovyTemplateAutoConfiguration.java)可以获取其他Groovy自定义选项。
+如果你正在使用Groovy模板，那就將`spring.groovy.template.cache`設置為false。查看[GroovyTemplateAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/groovy/template/GroovyTemplateAutoConfiguration.java)可以獲取其他Groovy自定義選項。
 
-* 在不重启容器的情况下重新加载Velocity模板
+* 在不重啟容器的情況下重新加載Velocity模板
 
-如果你正在使用Velocity，那就将`spring.velocity.cache`设置为false。查看[VelocityAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/velocity/VelocityAutoConfiguration.java)可以获取其他Velocity自定义选项。
+如果你正在使用Velocity，那就將`spring.velocity.cache`設置為false。查看[VelocityAutoConfiguration](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/velocity/VelocityAutoConfiguration.java)可以獲取其他Velocity自定義選項。
 
-* 在不重启容器的情况下重新加载Java类
+* 在不重啟容器的情況下重新加載Java類
 
-现代IDEs（Eclipse, IDEA等）都支持字节码的热交换，所以如果你做了一个没有影响类或方法签名的改变，它会利索地重新加载并没有任何影响。
+現代IDEs（Eclipse, IDEA等）都支援字節碼的熱交換，所以如果你做了一個沒有影響類或方法簽名的改變，它會利索地重新加載並沒有任何影響。
 
-[Spring Loaded](https://github.com/spring-projects/spring-loaded)在这方面走的更远，它能够重新加载方法签名改变的类定义。如果对它进行一些自定义配置可以强制ApplicationContext刷新自己（但没有通用的机制来确保这对一个运行中的应用总是安全的，所以它可能只是一个开发时间的技巧）。
+[Spring Loaded](https://github.com/spring-projects/spring-loaded)在這方麵走的更遠，它能夠重新加載方法簽名改變的類定義。如果對它進行一些自定義配置可以強製ApplicationContext刷新自己（但沒有通用的機製來確保這對一個運行中的應用總是安全的，所以它可能只是一個開發時間的技巧）。
 
 - 使用Maven配置Spring Loaded
 
-为了在Maven命令行下使用Spring Loaded，你只需将它作为一个依赖添加到Spring Boot插件声明中即可，比如：
+為了在Maven命令行下使用Spring Loaded，你隻需將它作為一個依賴添加到Spring Boot插件聲明中即可，比如：
 ```xml
 <plugin>
     <groupId>org.springframework.boot</groupId>
@@ -973,13 +973,13 @@ Spring Boot有很多用于热加载的选项。使用IDE开发是一个不错的
     </dependencies>
 </plugin>
 ```
-正常情况下，这在Eclipse和IntelliJ中工作的相当漂亮，只要它们有相应的，和Maven默认一致的构建配置（Eclipse m2e对此支持的更好，开箱即用）。
+正常情況下，這在Eclipse和IntelliJ中工作的相當漂亮，隻要它們有相應的，和Maven默認一致的建構配置（Eclipse m2e對此支援的更好，開箱即用）。
 
 - 使用Gradle和IntelliJ配置Spring Loaded
 
-如果想将Spring Loaded和Gradle，IntelliJ结合起来，那你需要付出代价。默认情况下，IntelliJ将类编译到一个跟Gradle不同的位置，这会导致Spring Loaded监控失败。
+如果想將Spring Loaded和Gradle，IntelliJ結合起來，那你需要付出代價。默認情況下，IntelliJ將類編譯到一個跟Gradle不同的位置，這會導致Spring Loaded監控失敗。
 
-为了正确配置IntelliJ，你可以使用`idea` Gradle插件：
+為了正確配置IntelliJ，你可以使用`idea` Gradle插件：
 ```gradle
 buildscript {
     repositories { jcenter() }
@@ -1000,27 +1000,27 @@ idea {
 
 // ...
 ```
-**注**：IntelliJ必须配置跟命令行Gradle任务相同的Java版本，并且springloaded必须作为一个buildscript依赖被包含进去。
+**注**：IntelliJ必須配置跟命令行Gradle任務相同的Java版本，並且springloaded必須作為一個buildscript依賴被包含進去。
 
-此外，你也可以启用Intellij内部的`Make Project Automatically`，这样不管什么时候只要文件被保存都会自动编译你的代码。
+此外，你也可以啟用Intellij內部的`Make Project Automatically`，這樣不管什麼時候隻要文件被保存都會自動編譯你的代碼。
 
-### 构建
+### 建構
 
-* 使用Maven自定义依赖版本
+* 使用Maven自定義依賴版本
 
-如果你使用Maven进行一个直接或间接继承`spring-boot-dependencies`（比如`spring-boot-starter-parent`）的构建，并想覆盖一个特定的第三方依赖，那你可以添加合适的`<properties>`元素。浏览[spring-boot-dependencies](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-dependencies/pom.xml) POM可以获取一个全面的属性列表。例如，想要选择一个不同的slf4j版本，你可以添加以下内容：
+如果你使用Maven進行一個直接或間接繼承`spring-boot-dependencies`（比如`spring-boot-starter-parent`）的建構，並想覆蓋一個特定的第三方依賴，那你可以添加合適的`<properties>`元素。瀏覽[spring-boot-dependencies](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-dependencies/pom.xml) POM可以獲取一個全麵的屬性列表。例如，想要選擇一個不同的slf4j版本，你可以添加以下內容：
 ```xml
 <properties>
     <slf4j.version>1.7.5<slf4j.version>
 </properties>
 ```
-**注**：这只在你的Maven项目继承（直接或间接）自`spring-boot-dependencies`才有用。如果你使用`<scope>import</scope>`，将`spring-boot-dependencies`添加到自己的`dependencyManagement`片段，那你必须自己重新定义artifact而不是覆盖属性。
+**注**：這隻在你的Maven項目繼承（直接或間接）自`spring-boot-dependencies`才有用。如果你使用`<scope>import</scope>`，將`spring-boot-dependencies`添加到自己的`dependencyManagement`片段，那你必須自己重新定義artifact而不是覆蓋屬性。
 
-**注**：每个Spring Boot发布都是基于一些特定的第三方依赖集进行设计和测试的，覆盖版本可能导致兼容性问题。
+**注**：每個Spring Boot發布都是基於一些特定的第三方依賴集進行設計和測試的，覆蓋版本可能導致兼容性問題。
 
-* 使用Maven创建可执行JAR
+* 使用Maven創建可執行JAR
 
-`spring-boot-maven-plugin`能够用来创建可执行的'胖'JAR。如果你正在使用`spring-boot-starter-parent` POM，你可以简单地声明该插件，然后你的jar将被重新打包：
+`spring-boot-maven-plugin`能夠用來創建可執行的'胖'JAR。如果你正在使用`spring-boot-starter-parent` POM，你可以簡單地聲明該插件，然後你的jar將被重新打包：
 ```xml
 <build>
     <plugins>
@@ -1031,7 +1031,7 @@ idea {
     </plugins>
 </build>
 ```
-如果没有使用parent POM，你仍旧可以使用该插件。不过，你需要另外添加一个`<executions>`片段：
+如果沒有使用parent POM，你仍舊可以使用該插件。不過，你需要另外添加一個`<executions>`片段：
 ```xml
 <build>
     <plugins>
@@ -1050,13 +1050,13 @@ idea {
     </plugins>
 </build>
 ```
-查看[插件文档](http://docs.spring.io/spring-boot/docs/1.3.0.BUILD-SNAPSHOT/maven-plugin/usage.html)获取详细的用例。
+查看[插件文件](http://docs.spring.io/spring-boot/docs/1.3.0.BUILD-SNAPSHOT/maven-plugin/usage.html)獲取詳細的用例。
 
-* 创建其他的可执行JAR
+* 創建其他的可執行JAR
 
-如果你想将自己的项目以library jar的形式被其他项目依赖，并且需要它是一个可执行版本（例如demo），你需要使用略微不同的方式来配置该构建。
+如果你想將自己的項目以library jar的形式被其他項目依賴，並且需要它是一個可執行版本（例如demo），你需要使用略微不同的方式來配置該建構。
 
-对于Maven来说，正常的JAR插件和Spring Boot插件都有一个'classifier'，你可以添加它来创建另外的JAR。示例如下（使用Spring Boot Starter Parent管理插件版本，其他配置采用默认设置）：
+對於Maven來說，正常的JAR插件和Spring Boot插件都有一個'classifier'，你可以添加它來創建另外的JAR。範例如下（使用Spring Boot Starter Parent管理插件版本，其他配置采用默認設置）：
 ```xml
 <build>
     <plugins>
@@ -1070,19 +1070,19 @@ idea {
     </plugins>
 </build>
 ```
-上述配置会产生两个jars，默认的一个和使用带有classifier 'exec'的Boot插件构建的可执行的一个。
+上述配置會產生兩個jars，默認的一個和使用帶有classifier 'exec'的Boot插件建構的可執行的一個。
 
-对于Gradle用户来说，步骤类似。示例如下：
+對於Gradle用戶來說，步驟類似。範例如下：
 ```gradle
 bootRepackage  {
     classifier = 'exec'
 }
 ```
-* 在可执行jar运行时提取特定的版本
+* 在可執行jar運行時提取特定的版本
 
-在一个可执行jar中，为了运行，多数内嵌的库不需要拆包（unpacked），然而有一些库可能会遇到问题。例如，JRuby包含它自己的内嵌jar，它假定`jruby-complete.jar`本身总是能够直接作为文件访问的。
+在一個可執行jar中，為了運行，多數內嵌的庫不需要拆包（unpacked），然而有一些庫可能會遇到問題。例如，JRuby包含它自己的內嵌jar，它假定`jruby-complete.jar`本身總是能夠直接作為文件訪問的。
 
-为了处理任何有问题的库，你可以标记那些特定的内嵌jars，让它们在可执行jar第一次运行时自动解压到一个临时文件夹中。例如，为了将JRuby标记为使用Maven插件拆包，你需要添加如下的配置：
+為了處理任何有問題的庫，你可以標記那些特定的內嵌jars，讓它們在可執行jar第一次運行時自動解壓到一個臨時文件夾中。例如，為了將JRuby標記為使用Maven插件拆包，你需要添加如下的配置：
 ```xml
 <build>
     <plugins>
@@ -1107,11 +1107,11 @@ springBoot  {
     requiresUnpack = ['org.jruby:jruby-complete']
 }
 ```
-* 使用排除创建不可执行的JAR
+* 使用排除創建不可執行的JAR
 
-如果你构建的产物既有可执行的jar和非可执行的jar，那你常常需要为可执行的版本添加额外的配置文件，而这些文件在一个library jar中是不需要的。比如，application.yml配置文件可能需要从非可执行的JAR中排除。
+如果你建構的產物既有可執行的jar和非可執行的jar，那你常常需要為可執行的版本添加額外的配置文件，而這些文件在一個library jar中是不需要的。比如，application.yml配置文件可能需要從非可執行的JAR中排除。
 
-下面是如何在Maven中实现：
+下面是如何在Maven中實現：
 ```xml
 <build>
     <plugins>
@@ -1153,7 +1153,7 @@ springBoot  {
     </plugins>
 </build>
 ```
-在Gradle中，你可以使用标准任务的DSL（领域特定语言）特性创建一个新的JAR存档，然后在bootRepackage任务中使用withJarTask属性添加对它的依赖：
+在Gradle中，你可以使用標準任務的DSL（領域特定語言）特性創建一個新的JAR存檔，然後在bootRepackage任務中使用withJarTask屬性添加對它的依賴：
 ```gradle
 jar {
     baseName = 'spring-boot-sample-profile'
@@ -1172,13 +1172,13 @@ bootRepackage  {
     withJarTask = tasks['execJar']
 }
 ```
-* 远程调试一个使用Maven启动的Spring Boot项目
+* 遠程調試一個使用Maven啟動的Spring Boot項目
 
-想要为使用Maven启动的Spring Boot应用添加一个远程调试器，你可以使用[mave插件](http://docs.spring.io/spring-boot/docs/1.3.0.BUILD-SNAPSHOT/maven-plugin/)的jvmArguments属性。详情参考[示例](http://docs.spring.io/spring-boot/docs/1.3.0.BUILD-SNAPSHOT/maven-plugin/examples/run-debug.html)。
+想要為使用Maven啟動的Spring Boot應用添加一個遠程調試器，你可以使用[mave插件](http://docs.spring.io/spring-boot/docs/1.3.0.BUILD-SNAPSHOT/maven-plugin/)的jvmArguments屬性。詳情參考[範例](http://docs.spring.io/spring-boot/docs/1.3.0.BUILD-SNAPSHOT/maven-plugin/examples/run-debug.html)。
 
-* 远程调试一个使用Gradle启动的Spring Boot项目
+* 遠程調試一個使用Gradle啟動的Spring Boot項目
 
-想要为使用Gradle启动的Spring Boot应用添加一个远程调试器，你可以使用build.gradle的applicationDefaultJvmArgs属性或`--debug-jvm`命令行选项。
+想要為使用Gradle啟動的Spring Boot應用添加一個遠程調試器，你可以使用build.gradle的applicationDefaultJvmArgs屬性或`--debug-jvm`命令行選項。
 
 build.gradle：
 ```gradle
@@ -1190,17 +1190,17 @@ applicationDefaultJvmArgs = [
 ```shell
 $ gradle run --debug-jvm
 ```
-详情查看[Gradle应用插件](http://www.gradle.org/docs/current/userguide/application_plugin.html)。
+詳情查看[Gradle應用插件](http://www.gradle.org/docs/current/userguide/application_plugin.html)。
 
-* 使用Ant构建可执行存档（archive）
+* 使用Ant建構可執行存檔（archive）
 
-想要使用Ant进行构建，你需要抓取依赖，编译，然后像通常那样创建一个jar或war存档。为了让它可以执行：
+想要使用Ant進行建構，你需要抓取依賴，編譯，然後像通常那樣創建一個jar或war存檔。為了讓它可以執行：
 
-1. 使用合适的启动器配置`Main-Class`，比如对于jar文件使用JarLauncher，然后将其他需要的属性以manifest实体指定，主要是一个`Start-Class`。
-2. 将运行时依赖添加到一个内嵌的'lib'目录（对于jar），`provided`（内嵌容器）依赖添加到一个内嵌的`lib-provided`目录。记住***不要***压缩存档中的实体。
-3. 在存档的根目录添加`spring-boot-loader`类（这样`Main-Class`就可用了）。
+1. 使用合適的啟動器配置`Main-Class`，比如對於jar文件使用JarLauncher，然後將其他需要的屬性以manifest實體指定，主要是一個`Start-Class`。
+2. 將運行時依賴添加到一個內嵌的'lib'目錄（對於jar），`provided`（內嵌容器）依賴添加到一個內嵌的`lib-provided`目錄。記住***不要***壓縮存檔中的實體。
+3. 在存檔的根目錄添加`spring-boot-loader`類（這樣`Main-Class`就可用了）。
 
-示例：
+範例：
 ```xml
 <target name="build" depends="compile">
     <copy todir="target/classes/lib">
@@ -1217,32 +1217,32 @@ $ gradle run --debug-jvm
     </jar>
 </target>
 ```
-该Actuator示例中有一个build.xml文件，可以使用以下命令来运行：
+該Actuator範例中有一個build.xml文件，可以使用以下命令來運行：
 ```shell
 $ ant -lib <path_to>/ivy-2.2.jar
 ```
-在上述操作之后，你可以使用以下命令运行该应用：
+在上述操作之後，你可以使用以下命令運行該應用：
 ```shell
 $ java -jar target/*.jar
 ```
 * 如何使用Java6
 
-如果想在Java6环境中使用Spring Boot，你需要改变一些配置。具体的变化取决于你应用的功能。
+如果想在Java6環境中使用Spring Boot，你需要改變一些配置。具體的變化取決於你應用的功能。
 
-- 内嵌Servlet容器兼容性
+- 內嵌Servlet容器兼容性
 
-如果你在使用Boot的内嵌Servlet容器，你需要使用一个兼容Java6的容器。Tomcat 7和Jetty 8都是Java 6兼容的。具体参考[Section 63.15, “Use Tomcat 7”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-use-tomcat-7)和[Section 63.16, “Use Jetty 8”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-use-jetty-8)。
+如果你在使用Boot的內嵌Servlet容器，你需要使用一個兼容Java6的容器。Tomcat 7和Jetty 8都是Java 6兼容的。具體參考[Section 63.15, “Use Tomcat 7”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-use-tomcat-7)和[Section 63.16, “Use Jetty 8”](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-use-jetty-8)。
 
 - JTA API兼容性
 
-Java事务API自身并不要求Java 7，而是官方的API jar包含的已构建类要求Java 7。如果你正在使用JTA，那么你需要使用能够在Java 6工作的构建版本替换官方的JTA 1.2 API jar。为了完成该操作，你需要排除任何对`javax.transaction:javax.transaction-api`的传递依赖，并使用`org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.0.Final`依赖替换它们。
+Java事務API自身並不要求Java 7，而是官方的API jar包含的已建構類要求Java 7。如果你正在使用JTA，那麼你需要使用能夠在Java 6工作的建構版本替換官方的JTA 1.2 API jar。為了完成該操作，你需要排除任何對`javax.transaction:javax.transaction-api`的傳遞依賴，並使用`org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.0.Final`依賴替換它們。
 
 
-### 传统部署
+### 傳統部署
 
-* 创建一个可部署的war文件
+* 創建一個可部署的war文件
 
-产生一个可部署war包的第一步是提供一个SpringBootServletInitializer子类，并覆盖它的configure方法。这充分利用了Spring框架对Servlet 3.0的支持，并允许你在应用通过servlet容器启动时配置它。通常，你只需把应用的主类改为继承SpringBootServletInitializer即可：
+產生一個可部署war包的第一步是提供一個SpringBootServletInitializer子類，並覆蓋它的configure方法。這充分利用了Spring框架對Servlet 3.0的支援，並允許你在應用通過servlet容器啟動時配置它。通常，你隻需把應用的主類改為繼承SpringBootServletInitializer即可：
 ```java
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
@@ -1258,15 +1258,15 @@ public class Application extends SpringBootServletInitializer {
 
 }
 ```
-下一步是更新你的构建配置，这样你的项目将产生一个war包而不是jar包。如果你使用Maven，并使用`spring-boot-starter-parent`（为了配置Maven的war插件），所有你需要做的就是更改pom.xml的packaging为war：
+下一步是更新你的建構配置，這樣你的項目將產生一個war包而不是jar包。如果你使用Maven，並使用`spring-boot-starter-parent`（為了配置Maven的war插件），所有你需要做的就是更改pom.xml的packaging為war：
 ```xml
 <packaging>war</packaging>
 ```
-如果你使用Gradle，你需要修改build.gradle来将war插件应用到项目上：
+如果你使用Gradle，你需要修改build.gradle來將war插件應用到項目上：
 ```gradle
 apply plugin: 'war'
 ```
-该过程最后的一步是确保内嵌的servlet容器不能干扰war包将部署的servlet容器。为了达到这个目的，你需要将内嵌容器的依赖标记为provided。
+該過程最後的一步是確保內嵌的servlet容器不能幹擾war包將部署的servlet容器。為了達到這個目的，你需要將內嵌容器的依賴標記為provided。
 
 如果使用Maven：
 ```xml
@@ -1288,19 +1288,19 @@ dependencies {
     // …
 }
 ```
-如果你使用[Spring Boot构建工具](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#build-tool-plugins)，将内嵌容器依赖标记为provided将产生一个可执行war包，在`lib-provided`目录有该war包的provided依赖。这意味着，除了部署到servlet容器，你还可以通过使用命令行`java -jar`命令来运行应用。
+如果你使用[Spring Boot建構工具](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#build-tool-plugins)，將內嵌容器依賴標記為provided將產生一個可執行war包，在`lib-provided`目錄有該war包的provided依賴。這意味著，除了部署到servlet容器，你還可以通過使用命令行`java -jar`命令來運行應用。
 
-**注**：查看Spring Boot基于以上配置的一个[Maven示例应用](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-traditional/pom.xml)。
+**注**：查看Spring Boot基於以上配置的一個[Maven範例應用](http://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-traditional/pom.xml)。
 
-* 为老的servlet容器创建一个可部署的war文件
+* 為老的servlet容器創建一個可部署的war文件
 
-老的Servlet容器不支持在Servlet 3.0中使用的ServletContextInitializer启动处理。你仍旧可以在这些容器使用Spring和Spring Boot，但你需要为应用添加一个web.xml，并将它配置为通过一个DispatcherServlet加载一个ApplicationContext。
+老的Servlet容器不支援在Servlet 3.0中使用的ServletContextInitializer啟動處理。你仍舊可以在這些容器使用Spring和Spring Boot，但你需要為應用添加一個web.xml，並將它配置為通過一個DispatcherServlet加載一個ApplicationContext。
 
-* 将现有的应用转换为Spring Boot
+* 將現有的應用轉換為Spring Boot
 
-对于一个非web项目，转换为Spring Boot应用很容易（抛弃创建ApplicationContext的代码，取而代之的是调用SpringApplication或SpringApplicationBuilder）。Spring MVC web应用通常先创建一个可部署的war应用，然后将它迁移为一个可执行的war或jar。建议阅读[Getting Started Guide on Converting a jar to a war.](http://spring.io/guides/gs/convert-jar-to-war/)。
+對於一個非web項目，轉換為Spring Boot應用很容易（拋棄創建ApplicationContext的代碼，取而代之的是調用SpringApplication或SpringApplicationBuilder）。Spring MVC web應用通常先創建一個可部署的war應用，然後將它遷移為一個可執行的war或jar。建議閱讀[Getting Started Guide on Converting a jar to a war.](http://spring.io/guides/gs/convert-jar-to-war/)。
 
-通过继承SpringBootServletInitializer创建一个可执行war（比如，在一个名为Application的类中），然后添加Spring Boot的`@EnableAutoConfiguration`注解。示例：
+通過繼承SpringBootServletInitializer創建一個可執行war（比如，在一個名為Application的類中），然後添加Spring Boot的`@EnableAutoConfiguration`注解。範例：
 ```java
 @Configuration
 @EnableAutoConfiguration
@@ -1317,40 +1317,40 @@ public class Application extends SpringBootServletInitializer {
 
 }
 ```
-记住不管你往sources放什么东西，它仅是一个Spring ApplicationContext，正常情况下，任何生效的在这里也会起作用。有一些beans你可以先移除，然后让Spring Boot提供它的默认实现，不过有可能需要先完成一些事情。
+記住不管你往sources放什麼東西，它僅是一個Spring ApplicationContext，正常情況下，任何生效的在這裡也會起作用。有一些beans你可以先移除，然後讓Spring Boot提供它的默認實現，不過有可能需要先完成一些事情。
 
-静态资源可以移到classpath根目录下的`/public`（或`/static`，`/resources`，`/META-INF/resources`）。同样的方式也适合于`messages.properties`（Spring Boot在classpath根目录下自动发现这些配置）。
+靜態資源可以移到classpath根目錄下的`/public`（或`/static`，`/resources`，`/META-INF/resources`）。同樣的方式也適合於`messages.properties`（Spring Boot在classpath根目錄下自動發現這些配置）。
 
-美妙的（Vanilla usage of）Spring DispatcherServlet和Spring Security不需要改变。如果你的应用有其他特性，比如使用其他servlets或filters，那你可能需要添加一些配置到你的Application上下文中，按以下操作替换web.xml的那些元素：
+美妙的（Vanilla usage of）Spring DispatcherServlet和Spring Security不需要改變。如果你的應用有其他特性，比如使用其他servlets或filters，那你可能需要添加一些配置到你的Application上下文中，按以下操作替換web.xml的那些元素：
 
-- 在容器中安装一个Servlet或ServletRegistrationBean类型的`@Bean`，就好像web.xml中的`<servlet/>`和`<servlet-mapping/>`。
-- 同样的添加一个Filter或FilterRegistrationBean类型的`@Bean`（类似于`<filter/>`和`<filter-mapping/>`）。
-- 在XML文件中的ApplicationContext可以通过`@Import`添加到你的Application中。简单的情况下，大量使用注解配置可以在几行内定义`@Bean`定义。
+- 在容器中安裝一個Servlet或ServletRegistrationBean類型的`@Bean`，就好像web.xml中的`<servlet/>`和`<servlet-mapping/>`。
+- 同樣的添加一個Filter或FilterRegistrationBean類型的`@Bean`（類似於`<filter/>`和`<filter-mapping/>`）。
+- 在XML文件中的ApplicationContext可以通過`@Import`添加到你的Application中。簡單的情況下，大量使用注解配置可以在幾行內定義`@Bean`定義。
 
-一旦war可以使用，我们就通过添加一个main方法到Application来让它可以执行，比如：
+一旦war可以使用，我們就通過添加一個main方法到Application來讓它可以執行，比如：
 ```java
 public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
 }
 ```
-应用可以划分为多个类别：
+應用可以劃分為多個類別：
 
-- 没有web.xml的Servlet 3.0+应用
-- 有web.xml的应用
-- 有上下文层次的应用
-- 没有上下文层次的应用
+- 沒有web.xml的Servlet 3.0+應用
+- 有web.xml的應用
+- 有上下文層次的應用
+- 沒有上下文層次的應用
 
-所有这些都可以进行适当的转化，但每个可能需要稍微不同的技巧。
+所有這些都可以進行適當的轉化，但每個可能需要稍微不同的技巧。
 
-Servlet 3.0+的应用转化的相当简单，如果它们已经使用Spring Servlet 3.0+初始化器辅助类。通常所有来自一个存在的WebApplicationInitializer的代码可以移到一个SpringBootServletInitializer中。如果一个存在的应用有多个ApplicationContext（比如，如果它使用AbstractDispatcherServletInitializer），那你可以将所有上下文源放进一个单一的SpringApplication。你遇到的主要难题可能是如果那样不能工作，那你就要维护上下文层次。参考示例[entry on building a hierarchy](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-build-an-application-context-hierarchy)。一个存在的包含web相关特性的父上下文通常需要分解，这样所有的ServletContextAware组件都处于子上下文中。
+Servlet 3.0+的應用轉化的相當簡單，如果它們已經使用Spring Servlet 3.0+初始化器輔助類。通常所有來自一個存在的WebApplicationInitializer的代碼可以移到一個SpringBootServletInitializer中。如果一個存在的應用有多個ApplicationContext（比如，如果它使用AbstractDispatcherServletInitializer），那你可以將所有上下文源放進一個單一的SpringApplication。你遇到的主要難題可能是如果那樣不能工作，那你就要維護上下文層次。參考範例[entry on building a hierarchy](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-build-an-application-context-hierarchy)。一個存在的包含web相關特性的父上下文通常需要分解，這樣所有的ServletContextAware組件都處於子上下文中。
 
-对于还不是Spring应用的应用来说，上面的指南有助于你把应用转换为一个Spring Boot应用，但你也可以选择其他方式。
+對於還不是Spring應用的應用來說，上麵的指南有助於你把應用轉換為一個Spring Boot應用，但你也可以選擇其他方式。
 
 * 部署WAR到Weblogic
 
-想要将Spring Boot应用部署到Weblogic，你需要确保你的servlet初始化器直接实现WebApplicationInitializer（即使你继承的基类已经实现了它）。
+想要將Spring Boot應用部署到Weblogic，你需要確保你的servlet初始化器直接實現WebApplicationInitializer（即使你繼承的基類已經實現了它）。
 
-一个传统的Weblogic初始化器可能如下所示：
+一個傳統的Weblogic初始化器可能如下所示：
 ```java
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
@@ -1361,7 +1361,7 @@ public class MyApplication extends SpringBootServletInitializer implements WebAp
 
 }
 ```
-如果使用logback，你需要告诉Weblogic你倾向使用的打包版本而不是服务器预装的版本。你可以通过添加一个具有如下内容的`WEB-INF/weblogic.xml`实现该操作：
+如果使用logback，你需要告訴Weblogic你傾向使用的打包版本而不是服務器預裝的版本。你可以通過添加一個具有如下內容的`WEB-INF/weblogic.xml`實現該操作：
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <wls:weblogic-web-app
@@ -1380,7 +1380,7 @@ public class MyApplication extends SpringBootServletInitializer implements WebAp
 ```
 * 部署WAR到老的(Servlet2.5)容器
 
-Spring Boot使用 Servlet 3.0 APIs初始化ServletContext（注册Servlets等），所以你不能在一个Servlet 2.5的容器中原封不动的使用同样的应用。使用一些特定的工具也是可以在一个老的容器中运行Spring Boot应用的。如果添加了`org.springframework.boot:spring-boot-legacy`依赖，你只需要创建一个web.xml，声明一个用于创建应用上下文的上下文监听器，过滤器和servlets。上下文监听器是专用于Spring Boot的，其他的都是一个Servlet 2.5的Spring应用所具有的。示例：
+Spring Boot使用 Servlet 3.0 APIs初始化ServletContext（注冊Servlets等），所以你不能在一個Servlet 2.5的容器中原封不動的使用同樣的應用。使用一些特定的工具也是可以在一個老的容器中運行Spring Boot應用的。如果添加了`org.springframework.boot:spring-boot-legacy`依賴，你隻需要創建一個web.xml，聲明一個用於創建應用上下文的上下文監聽器，過濾器和servlets。上下文監聽器是專用於Spring Boot的，其他的都是一個Servlet 2.5的Spring應用所具有的。範例：
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
@@ -1423,4 +1423,4 @@ Spring Boot使用 Servlet 3.0 APIs初始化ServletContext（注册Servlets等）
 
 </web-app>
 ```
-在该示例中，我们使用一个单一的应用上下文（通过上下文监听器创建的），然后使用一个init参数将它附加到DispatcherServlet。这在一个Spring Boot应用中是很正常的（你通常只有一个应用上下文）。
+在該範例中，我們使用一個單一的應用上下文（通過上下文監聽器創建的），然後使用一個init參數將它附加到DispatcherServlet。這在一個Spring Boot應用中是很正常的（你通常隻有一個應用上下文）。

@@ -1,5 +1,5 @@
-### 附录C.2 来自`spring-boot-actuator`模块
+### 附錄C.2 來自`spring-boot-actuator`模塊
 
-下列的自动配置类来自于`spring-boot-actuator`模块：
+下列的自動配置類來自於`spring-boot-actuator`模塊：
 
 

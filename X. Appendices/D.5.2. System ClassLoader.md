@@ -1,3 +1,3 @@
-### 附录D.5.2. 系统ClassLoader
+### 附錄D.5.2. 系統ClassLoader
 
-启动的应用在加载类时应该使用`Thread.getContextClassLoader()`（多数库和框架都默认这样做）。尝试通过`ClassLoader.getSystemClassLoader()`加载嵌套的类将失败。请注意`java.util.Logging`总是使用系统类加载器，由于这个原因你需要考虑一个不同的日志实现。
+啟動的應用在加載類時應該使用`Thread.getContextClassLoader()`（多數庫和框架都默認這樣做）。嘗試通過`ClassLoader.getSystemClassLoader()`加載嵌套的類將失敗。請注意`java.util.Logging`總是使用系統類加載器，由於這個原因你需要考慮一個不同的日誌實現。

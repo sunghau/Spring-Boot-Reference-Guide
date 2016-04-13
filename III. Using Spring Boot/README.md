@@ -1,4 +1,4 @@
 ### 使用Spring Boot
-本章节将会详细介绍如何使用Spring Boot。它覆盖了构建系统，自动配置和运行/部署选项等主题。我们也覆盖了一些Spring Boot最佳实践。尽管Spring Boot没有什么特别的（只是一个你能消费的库），但仍有一些建议，如果你遵循的话将会让你的开发进程更容易。
+本章節將會詳細介紹如何使用Spring Boot。它覆蓋了建構系統，自動配置和運行/部署選項等主題。我們也覆蓋了一些Spring Boot最佳實踐。盡管Spring Boot沒有什麼特別的（只是一個你能消費的庫），但仍有一些建議，如果你遵循的話將會讓你的開發進程更容易。
 
-如果你刚接触Spring Boot，那最好先读下上一章节的[Getting Started](../II. Getting started/README.md)指南。
+如果你剛接觸Spring Boot，那最好先讀下上一章節的[Getting Started](../II. Getting started/README.md)指南。
