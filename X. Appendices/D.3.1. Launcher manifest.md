@@ -1,6 +1,6 @@
 ### 附錄D.3.1 Launcher manifest
 
-你需要指定一個合適的Launcher作為`META-INF/MANIFEST.MF`的`Main-Class`屬性。你實際想要啟動的類（也就是你編寫的包含main方法的類）需要在`Start-Class`屬性中定義。
+你需要指定一個合適的Launcher作為`META-INF/MANIFEST.MF`的`Main-Class`屬性。你實際想要啟動的類（也就是你編寫的包含main函式的類）需要在`Start-Class`屬性中定義。
 
 例如，這裡有個典型的可執行jar文件的MANIFEST.MF：
 ```properties

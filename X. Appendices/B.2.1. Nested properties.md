@@ -1,6 +1,6 @@
 ### 附錄 B.2.1. 內嵌屬性
 
-該注解處理器自動將內部類當做內嵌屬性處理。例如，下面的類：
+該註解處理器自動將內部類當做內嵌屬性處理。例如，下面的類：
 ```java
 @ConfigurationProperties(prefix="server")
 public class ServerProperties {

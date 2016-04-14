@@ -93,7 +93,7 @@ $ spring <HIT TAB HERE>
 
 #### 4.Quick Start
 
-創建app.groovy，代碼如下：
+建立app.groovy，程式碼如下：
 <pre>
 @RestController
 class ThisWillActuallyRun {

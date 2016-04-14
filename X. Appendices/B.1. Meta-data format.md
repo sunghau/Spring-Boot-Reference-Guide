@@ -29,7 +29,7 @@
 server.port=9090
 server.servlet-path=/home
 ```
-"groups"是高級別的節點，它們本身不指定一個值，但為properties提供一個有上下文關聯的分組。例如，`server.port`和`server.servlet-path`屬性是`server`組的一部分。
+"groups"是進階別的節點，它們本身不指定一個值，但為properties提供一個有上下文關聯的分組。例如，`server.port`和`server.servlet-path`屬性是`server`組的一部分。
 
 **注**：不需要每個"property"都有一個"group"，一些屬性可以以自己的形式存在。
 

@@ -1,16 +1,16 @@
 ### 部署到雲端
 
-對於大多數流行雲PaaS（平台即服務）提供商，Spring Boot的可執行jars就是為它們準備的。這些提供商往往要求你帶上自己的容器；它們管理應用的進程（不特別針對Java應用程序），所以它們需要一些中間層來將你的應用適配到雲概念中的一個運行進程。
+對於大多數流行雲PaaS（平台即服務）提供商，Spring Boot的可執行jars就是為它們準備的。這些提供商往往要求你帶上自己的容器；它們管理應用的程序（不特別針對Java應用程序），所以它們需要一些中間層來將你的應用適配到雲概念中的一個運行程序。
 
-兩個流行的雲提供商，Heroku和Cloud Foundry，采取一個打包（'buildpack'）方法。為了啟動你的應用程序，不管需要什麼，buildpack都會將它們打包到你的部署代碼：它可能是一個JDK和一個java調用，也可能是一個內嵌的webserver，或者是一個成熟的應用服務器。buildpack是可插拔的，但你最好盡可能少的對它進行自定義設置。這可以減少不受你控製的功能範圍，最小化部署和生產環境的發散。
+兩個流行的雲提供商，Heroku和Cloud Foundry，採取一個打包（'buildpack'）函式。為了啟動你的應用程序，不管需要什麼，buildpack都會將它們打包到你的部署程式碼：它可能是一個JDK和一個java調用，也可能是一個內嵌的webserver，或者是一個成熟的應用服務器。buildpack是可插拔的，但你最好盡可能少的對它進行自定義設置。這可以減少不受你控製的功能範圍，最小化部署和生產環境的發散。
 
 理想情況下，你的應用就像一個Spring Boot可執行jar，所有運行需要的東西都打包到它內部。
 
 * Cloud Foundry
 
-如果不指定其他打包方式，Cloud Foundry會啟用它提供的默認打包方式。Cloud Foundry的[Java buildpack](https://github.com/cloudfoundry/java-buildpack)對Spring應用有出色的支援，包括Spring Boot。你可以部署獨立的可執行jar應用，也可以部署傳統的.war形式的應用。
+如果不指定其他打包方式，Cloud Foundry會啟用它提供的預設打包方式。Cloud Foundry的[Java buildpack](https://github.com/cloudfoundry/java-buildpack)對Spring應用有出色的支援，包括Spring Boot。你可以部署獨立的可執行jar應用，也可以部署傳統的.war形式的應用。
 
-一旦你建構了應用（比如，使用`mvn clean package`）並[安裝](http://docs.cloudfoundry.org/devguide/installcf/install-go-cli.html)了cf[命令列工具](http://docs.cloudfoundry.org/devguide/installcf/install-go-cli.html)，你可以使用下面的`cf push`命令（將路徑指向你編譯後的.jar）來部署應用。在發布一個應用前，確保你已登陸cf命令列客戶端。
+一旦你建構了應用（比如，使用`mvn clean package`）並[安裝](http://docs.cloudfoundry.org/devguide/installcf/install-go-cli.html)了cf[命令列工具](http://docs.cloudfoundry.org/devguide/installcf/install-go-cli.html)，你可以使用下面的`cf push`命令（將路徑指向你編譯後的.jar）來部署應用。在發佈一個應用前，確保你已登陸cf命令列客戶端。
 ```shell
 $ cf push acloudyspringtime -p target/demo-0.0.1-SNAPSHOT.jar
 ```
@@ -54,7 +54,7 @@ acloudyspringtime    started           1/1         512M     1G     acloudyspring
 
 - 綁定服務
 
-默認情況下，運行應用的元數據和服務連接信息被暴露為應用的環境變量（比如，$VCAP_SERVICES）。采用這種架構的原因是因為Cloud Foundry多語言特性（任何語言和平台都支援作為buildpack）。進程級別的環境變量是語言無關（language agnostic）的。
+預設情況下，運行應用的元數據和服務連接訊息被曝露為應用的環境變量（比如，$VCAP_SERVICES）。採用這種架構的原因是因為Cloud Foundry多語言特性（任何語言和平台都支援作為buildpack）。程序級別的環境變量是語言無關（language agnostic）的。
 
 環境變量並不總是有利於設計最簡單的API，所以Spring Boot自動提取它們，然後將這些數據導入能夠通過Spring `Environment`抽象訪問的屬性裡：
 ```java
@@ -72,7 +72,7 @@ class MyBean implements EnvironmentAware {
 
 }
 ```
-所有的Cloud Foundry屬性都以vcap作為前綴。你可以使用vcap屬性獲取應用信息（比如應用的公共URL）和服務信息（比如數據庫證書）。具體參考VcapApplicationListener Javadoc。
+所有的Cloud Foundry屬性都以vcap作為前綴。你可以使用vcap屬性獲取應用訊息（比如應用的公共URL）和服務訊息（比如數據函式庫證書）。具體參考VcapApplicationListener Javadoc。
 
 **注**：[Spring Cloud Connectors](http://cloud.spring.io/spring-cloud-connectors/)項目很適合比如配置數據源的任務。Spring Boot提供自動配置支援和一個`spring-boot-starter-cloud-connectors` starter POM。
 
@@ -86,11 +86,11 @@ web: java -Dserver.port=$PORT -jar target/demo-0.0.1-SNAPSHOT.jar
 ```
 Spring Boot將`-D`參數作為屬性，通過一個Spring的Environment實例訪問。`server.port`配置屬性適合於內嵌的Tomcat，Jetty或Undertow實例啟用時使用。`$PORT`環境變量被分配給Heroku Paas使用。
 
-Heroku默認使用Java 1.6。隻要你的Maven或Gradle建構時使用相同的版本就沒問題（Maven用戶可以設置`java.version`屬性）。如果你想使用JDK 1.7，在你的pom.xml和Procfile臨近處創建一個system.properties文件。在該文件中添加以下設置：
+Heroku預設使用Java 1.6。隻要你的Maven或Gradle建構時使用相同的版本就沒問題（Maven用戶可以設置`java.version`屬性）。如果你想使用JDK 1.7，在你的pom.xml和Procfile臨近處建立一個system.properties文件。在該文件中添加以下設置：
 ```java
 java.runtime.version=1.7
 ```
-這就是你需要做的一切。對於Heroku部署來說，經常做的工作就是使用`git push`將代碼推送到生產環境。
+這就是你需要做的一切。對於Heroku部署來說，經常做的工作就是使用`git push`將程式碼推送到生產環境。
 ```shell
 $ git push heroku master
 
@@ -140,11 +140,11 @@ To git@heroku.com:agile-sierra-1405.git
 
 * Openshift
 
-[Openshift](https://www.openshift.com/)是RedHat公共（和企業）PaaS解決方案。和Heroku相似，它也是通過運行被git提交觸發的腳本來工作的，所以你可以使用任何你喜歡的方式編寫Spring Boot應用啟動腳本，隻要Java運行時環境可用（這是在Openshift上可以要求的一個標準特性）。為了實現這樣的效果，你可以使用[DIY Cartridge](https://www.openshift.com/developers/do-it-yourself)，並在`.openshift/action_scripts`下hooks你的倉庫：
+[Openshift](https://www.openshift.com/)是RedHat公共（和企業）PaaS解決方案。和Heroku相似，它也是通過運行被git提交觸發的腳本來工作的，所以你可以使用任何你喜歡的方式編寫Spring Boot應用啟動腳本，隻要Java運行時環境可用（這是在Openshift上可以要求的一個標準特性）。為了實現這樣的效果，你可以使用[DIY Cartridge](https://www.openshift.com/developers/do-it-yourself)，並在`.openshift/action_scripts`下hooks你的倉函式庫：
 
 基本模式如下：
 
-1. 確保Java和建構工具已被遠程安裝，比如使用一個`pre_build` hook（默認會安裝Java和Maven，不會安裝Gradle）。
+1. 確保Java和建構工具已被遠程安裝，比如使用一個`pre_build` hook（預設會安裝Java和Maven，不會安裝Gradle）。
 2. 使用一個`build` hook去建構你的jar（使用Maven或Gradle），比如
 ```shell
 #!/bin/bash
@@ -179,4 +179,4 @@ spring.datasource.password: ${OPENSHIFT_MYSQL_DB_PASSWORD}
 
 * Google App Engine
 
-Google App Engine跟Servlet 2.5 API是有聯係的，所以在不修改的情況係你是不能部署一個Spring應用的。具體查看本指南的[Servlet 2.5章節](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-servlet-2-5)。
+Google App Engine跟Servlet 2.5 API是有關係的，所以在不修改的情況係你是不能部署一個Spring應用的。具體查看本指南的[Servlet 2.5章節](http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-servlet-2-5)。
